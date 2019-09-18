@@ -10,7 +10,7 @@ export interface IImagecomparison {
     afterImage: Blob;
     title: string;
     subtitle?: string;
-    locationId?: integer;
+    locationId?: number;
     blogs?: IBlog[];
     locationdatum?: ILocationdata;
 }

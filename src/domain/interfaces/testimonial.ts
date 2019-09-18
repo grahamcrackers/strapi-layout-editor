@@ -9,8 +9,8 @@ export interface ITestimonial {
     title?: string;
     description?: string;
     name?: string;
-    order?: integer;
-    locationId?: integer;
+    order?: number;
+    locationId?: number;
     blogs?: IBlog[];
     locationdatum?: ILocationdata;
 }

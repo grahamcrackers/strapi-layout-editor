@@ -8,7 +8,7 @@ export interface IHeadersubmenuitem {
     id: string;
     title?: string;
     link?: string;
-    order?: integer;
+    order?: number;
     headersubmenu?: IHeadersubmenu;
     locationServiceName?: string;
     headersubmenuitems?: IHeadersubmenuitem[];

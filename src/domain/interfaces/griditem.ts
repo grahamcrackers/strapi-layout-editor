@@ -8,8 +8,8 @@ export interface IGriditem {
     header?: string;
     blurb?: string;
     link?: string;
-    order?: integer;
-    locationId?: integer;
+    order?: number;
+    locationId?: number;
     image?: Blob;
     grids?: IGrid[];
 }

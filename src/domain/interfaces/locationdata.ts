@@ -14,19 +14,19 @@ import { ITestimonial } from './testimonial';
  */
 export interface ILocationdata {
     id: string;
-    brandId?: integer;
+    brandId?: number;
     name?: string;
     tagLine?: string;
     businessStart?: Date;
-    yearsInBusiness?: integer;
+    yearsInBusiness?: number;
     businessDescription?: string;
     footersocialmedias?: IFootersocialmedia[];
     locationservices?: ILocationservice[];
-    locationId?: integer;
+    locationId?: number;
     leadEmail?: string;
     enterpriseDBA?: string;
-    enterpriseNumber?: integer;
-    licenseNumber?: integer;
+    enterpriseNumber?: number;
+    licenseNumber?: number;
     phone?: string;
     address1?: string;
     address2?: string;

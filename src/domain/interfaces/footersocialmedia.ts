@@ -8,7 +8,7 @@ export interface IFootersocialmedia {
     id: string;
     socialMediaType?: enumeration;
     link?: string;
-    order?: integer;
+    order?: number;
     footermenu?: IFootermenu;
     locationdatum?: ILocationdata;
 }

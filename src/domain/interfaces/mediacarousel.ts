@@ -11,7 +11,7 @@ export interface IMediacarousel {
     title: string;
     subtitle?: string;
     label?: string;
-    locationId?: integer;
+    locationId?: number;
     blogs?: IBlog[];
     locationdatum?: ILocationdata;
 }

@@ -7,6 +7,6 @@ export interface IAccordionitem {
     id: string;
     title: string;
     content?: string;
-    order?: integer;
+    order?: number;
     accordion?: IAccordion;
 }

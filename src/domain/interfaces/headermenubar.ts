@@ -7,6 +7,6 @@ export interface IHeadermenubar {
     id: string;
     title?: string;
     link?: string;
-    order?: integer;
+    order?: number;
     headermenu?: IHeadermenu;
 }

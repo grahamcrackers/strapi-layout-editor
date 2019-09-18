@@ -7,7 +7,7 @@ import { IGriditem } from './griditem';
 export interface IGrid {
     id: string;
     title?: string;
-    itemsPerRow?: integer;
+    itemsPerRow?: number;
     griditems?: IGriditem[];
     blogs?: IBlog[];
 }

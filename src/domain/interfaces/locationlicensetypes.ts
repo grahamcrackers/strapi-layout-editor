@@ -5,7 +5,7 @@ import { ILocationdata } from './locationdata';
  */
 export interface ILocationlicensetypes {
     id: string;
-    LicenseTypeId?: integer;
+    LicenseTypeId?: number;
     Name?: string;
     locationdata?: ILocationdata[];
 }
