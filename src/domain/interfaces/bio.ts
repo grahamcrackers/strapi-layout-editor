@@ -9,8 +9,8 @@ export interface IBio {
     title?: string;
     description?: string;
     name?: string;
-    order?: integer;
-    locationId?: integer;
+    order?: number;
+    locationId?: number;
     image?: Blob;
     blogs?: IBlog[];
     locationdatum?: ILocationdata;

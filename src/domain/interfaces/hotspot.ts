@@ -7,7 +7,7 @@ export interface IHotspot {
     id: string;
     title?: string;
     content?: string;
-    leftOffsetPercent?: integer;
-    topOffsetPercent?: integer;
+    leftOffsetPercent?: number;
+    topOffsetPercent?: number;
     hotspotviewers?: IHotspotviewer[];
 }

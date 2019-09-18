@@ -9,6 +9,6 @@ export interface IStep {
     title?: string;
     image?: Blob;
     color?: enumeration;
-    stepsPerLine?: integer;
+    stepsPerLine?: number;
     blogs?: IBlog[];
 }

@@ -8,5 +8,5 @@ export interface IFootersubmenuitem {
     title?: string;
     link?: string;
     footersubmenu?: IFootersubmenu;
-    order?: integer;
+    order?: number;
 }

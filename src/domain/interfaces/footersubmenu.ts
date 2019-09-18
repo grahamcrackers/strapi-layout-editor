@@ -8,6 +8,6 @@ export interface IFootersubmenu {
     id: string;
     title?: string;
     footersubmenuitems?: IFootersubmenuitem[];
-    order?: integer;
+    order?: number;
     footermenu?: IFootermenu;
 }
