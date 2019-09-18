@@ -19,12 +19,13 @@ module.exports = {
         // Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         
-        '@typescript-eslint/interface-name-prefix': 'always',
-        '@typescript-eslint/no-explicit-any': false,
-        '@typescript-eslint/explicit-function-return-type': false,
-        '@typescript-eslint/no-object-literal-type-assertion': ["error", {
-          allowAsParameter: true // Allow type assertion in call and new expression, default false
-        }],
+        '@typescript-eslint/interface-name-prefix': 1,
+        '@typescript-eslint/no-explicit-any': 1,
+        '@typescript-eslint/explicit-function-return-type': 0,
+        // '@typescript-eslint/no-object-literal-type-assertion': ["error", {
+        //   allowAsParameter: true // Allow type assertion in call and new expression, default false
+        // }],
+        '@typescript-eslint/no-angle-bracket-type-assertion': 0,
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn"
     },
