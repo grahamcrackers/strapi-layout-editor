@@ -1,3 +1,7 @@
+## An Experience Editor for strapi projects
+
+Uses [`react-grid-layout`](https://www.npmjs.com/package/react-grid-layout) for ordering strapi content.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
