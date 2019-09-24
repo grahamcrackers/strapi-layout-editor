@@ -6,6 +6,8 @@ import * as serviceWorker from './serviceWorker';
 import './index.css';
 import 'tachyons/css/tachyons.css';
 
+console.log(process.env.REACT_APP_STRAPI_ENDPOINT);
+
 render(<App />, document.getElementById('root'));
 
 // Enable Hot Module Reloading

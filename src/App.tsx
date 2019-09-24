@@ -1,14 +1,36 @@
 import React from 'react';
-import './App.css';
-import { BasicLayout } from './components/basic-layout';
-
 import 'react-grid-layout/css/styles.css';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import './App.css';
+import { AuthButton } from './common/auth-button';
+import { PrivateRoute } from './common/private-route';
+import { Dashboard } from './components/dashboard';
+import { LoginPage } from './pages/login.page';
+import { Public } from './pages/public.page';
+import { Protected } from './pages/protected.page';
 
 const App: React.FC = () => {
     return (
-        <div className="App">
-            <BasicLayout></BasicLayout>
-        </div>
+        <Router>
+            <div>
+                <AuthButton />
+                <ul>
+                    <li>
+                        <Link to="/public">Public Page</Link>
+                    </li>
+                    <li>
+                        <Link to="/protected">Protected Page</Link>
+                    </li>
+                    <li>
+                        <Link to="/dashboard">Dashboard</Link>
+                    </li>
+                </ul>
+                <Route path="/public" component={Public} />
+                <Route path="/login" component={LoginPage} />
+                <PrivateRoute path="/protected" component={Protected} />
+                <PrivateRoute path="/dashboard" component={Dashboard} />
+            </div>
+        </Router>
     );
 };
 
