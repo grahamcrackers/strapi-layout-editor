@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { config } from '../config/config';
-import * as strapiService from '../services/strapi.service';
+import { config } from '../../config/config';
+import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
-import { login } from '../services/login.service';
-import { ContentTypeItems } from '../pages/content-types-items.page';
-import { ExperienceEditorPage } from '../pages/experience-editor.page';
+import { login } from '../../services/login.service';
+import { ContentTypeItems } from '../../pages/content-types-items.page';
+import { ExperienceEditorPage } from '../../pages/experience-editor.page';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
