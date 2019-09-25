@@ -23,3 +23,8 @@ export interface ListFields {
     searchable: boolean;
     sortable: boolean;
 }
+
+export interface ContentTypeWithId {
+    id: string;
+    [prop: string]: string;
+}

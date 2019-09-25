@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { get } from '../services/strapi.service';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { JsonStringify } from '../common/json-stringify';
+import { get } from '../services/strapi.service';
 
 export const ExperienceEditorPage = props => {
+    const { contentType, itemId } = useParams();
     const [item, setItem] = useState({});
 
     useEffect(() => {

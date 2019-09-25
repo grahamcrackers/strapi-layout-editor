@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Layouts } from './interfaces';
-import { Link } from 'react-router-dom';
-import { RouteComponentProps } from 'react-router';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
-interface Props extends RouteComponentProps {
+interface Props {
     layouts: Layouts;
     items: any[];
 }
 
-export const ContentTypeTableBody = ({ layouts, items, match, location }: Props) => {
+export const ContentTypeTableBody = ({ layouts, items }: Props) => {
+    const params = useParams();
+    const location = useLocation();
     const [rows, setRows] = useState<any[]>([]);
 
     const getRowsData = (items: any) => {
@@ -36,8 +37,7 @@ export const ContentTypeTableBody = ({ layouts, items, match, location }: Props)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [layouts, items]);
-    console.log(match);
-    console.log(location);
+
     return (
         <tbody className="lh-copy">
             {rows &&

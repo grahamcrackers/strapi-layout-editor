@@ -39,7 +39,7 @@ export const ContentTypeItems = props => {
                 <div className="overflow-auto">
                     <table className="f6 w-100 mw8 center" cellSpacing="0">
                         <ContentTypeTableHeaders layouts={schema.layouts} metadatas={schema.metadatas} />
-                        <ContentTypeTableBody layouts={schema.layouts} items={items} {...props} />
+                        <ContentTypeTableBody layouts={schema.layouts} items={items} />
                     </table>
                 </div>
             </div>
