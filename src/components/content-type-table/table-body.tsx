@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Layouts } from './interfaces';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 interface Props {
     layouts: Layouts;
@@ -8,7 +8,6 @@ interface Props {
 }
 
 export const ContentTypeTableBody = ({ layouts, items }: Props) => {
-    const params = useParams();
     const location = useLocation();
     const [rows, setRows] = useState<any[]>([]);
 

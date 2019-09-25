@@ -1,13 +1,12 @@
 import React from 'react';
 import 'react-grid-layout/css/styles.css';
 import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-import './App.css';
 import { AuthButton } from './common/auth-button';
 import { PrivateRoute } from './common/private-route';
 import { Dashboard } from './components/dashboard';
 import { LoginPage } from './pages/login.page';
-import { Public } from './pages/public.page';
 import { Protected } from './pages/protected.page';
+import { Public } from './pages/public.page';
 
 const App: React.FC = () => {
     return (
