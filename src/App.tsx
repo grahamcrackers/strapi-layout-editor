@@ -29,6 +29,7 @@ const App: React.FC = () => {
                 <Route path="/login" component={LoginPage} />
                 <PrivateRoute path="/protected" component={Protected} />
                 <PrivateRoute path="/dashboard" component={Dashboard} />
+                {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
             </div>
         </Router>
     );

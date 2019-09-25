@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { config } from '../config/config';
 import * as strapiService from '../services/strapi.service';
-import { Link, Route } from 'react-router-dom';
+import { Link, Route, Switch } from 'react-router-dom';
 import { login } from '../services/login.service';
 import { ContentTypeItems } from '../pages/content-types-items.page';
+import { ExperienceEditorPage } from '../pages/experience-editor.page';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
@@ -43,7 +44,10 @@ export const Dashboard = () => {
             </div>
             <div className="fl w-80 bg-light-gray">
                 {/* <BasicLayout></BasicLayout> */}
-                <Route path="/dashboard/:contentType" component={ContentTypeItems}></Route>
+                <Switch>
+                    <Route exact={true} path="/dashboard/:contentType" component={ContentTypeItems} />
+                    <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditorPage} />
+                </Switch>
             </div>
         </article>
     );
