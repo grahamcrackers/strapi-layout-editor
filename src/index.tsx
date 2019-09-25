@@ -3,8 +3,9 @@ import { render } from 'react-dom';
 import App from './App';
 import * as serviceWorker from './common/serviceWorker';
 
-import './index.css';
+// styles
 import 'tachyons/css/tachyons.css';
+import './styles/index.css';
 
 console.log(process.env.REACT_APP_STRAPI_ENDPOINT);
 
