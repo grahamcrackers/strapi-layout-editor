@@ -23,9 +23,9 @@ export const login = async (identifier: string, password: string) => {
         })
         .then(response => {
             // Handle success.
-            console.log('Well done!');
-            console.log('User profile', response.data.user);
-            console.log('User token', response.data.jwt);
+            // console.log('Well done!');
+            // console.log('User profile', response.data.user);
+            // console.log('User token', response.data.jwt);
             saveToken(response.data.jwt);
         })
         .catch(error => {

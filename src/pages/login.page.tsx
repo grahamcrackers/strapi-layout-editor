@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom';
 import { login } from '../services/login.service';
 import { fakeAuth } from '../common/fake-auth';
 import { RouteComponentProps } from 'react-router';
-import { getToken } from '../services/token.service';
 
 interface LoginPageState {
     username: string;
