@@ -7,16 +7,20 @@ export interface ContentDataLayouts {
     list: boolean;
     edit: false | Omit<EditLayout, 'name'>;
     editRelations: boolean;
-    grid: Layout;
+    grid: false | Layout;
 }
 
 export interface ContentData {
-    // id: string;
     key: string;
     value: any;
     attributes: AttributeProps;
     metadata: MetaDataViews;
     layouts: ContentDataLayouts;
+}
+
+export interface EditLayoutWithPos extends EditLayout {
+    x: number;
+    y: number;
 }
 
 export const useContentData = (contentType, itemId, ignoreProps: string[] = []) => {
@@ -36,16 +40,18 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const flattenEditLayout = (): EditLayout[] => {
-        const flattened: EditLayout[] = [];
+    /**
+     * Flatten the edit layout matrix but preserve the x, y positions in the array matrix
+     */
+    const flattenEditLayouts = (): EditLayoutWithPos[] => {
+        const flattened: EditLayoutWithPos[] = [];
         if (contentModel) {
             const editLayouts = contentModel.layouts.edit;
 
-            for (const key in editLayouts) {
-                const editKey = editLayouts[key];
-
-                for (const obj of editKey) {
-                    flattened.push(obj);
+            for (const yPos in editLayouts) {
+                const editKey = editLayouts[yPos];
+                for (const xPos in editKey) {
+                    flattened.push({ ...editKey[xPos], y: +yPos, x: +xPos });
                 }
             }
         }
@@ -53,22 +59,38 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
         return flattened;
     };
 
-    const calculateGrid = () => {
+    /**
+     * Does the same thing as flattenEditLayouts() but will also provide the width and height for
+     * react-grid-layout based on a 12 row grid
+     */
+    const calculateGridLayouts = (): Layout[] => {
+        const layouts: Layout[] = [];
         if (contentModel) {
             const editLayouts = contentModel.layouts.edit;
 
             for (const yPos in editLayouts) {
-                console.log(yPos);
-                // const editKey = editLayouts[key];
-                // for (const obj of editKey) {
-                // }
+                const editKey = editLayouts[yPos];
+                for (const xPos in editKey) {
+                    const obj = editKey[xPos];
+
+                    /* 
+                       It looks like strapi bases it's width on a 12 col layout, so we are using the size from the 
+                       metadata. Height is set to 1 as a default to lay out the data on the page. 
+                       TODO: if we want to open this up to be actually customizable, we need to customize
+                       to different column sizes.                       
+                    */
+                    layouts.push({ i: obj.name, x: +xPos, y: +yPos, w: obj.size, h: 1 });
+                }
             }
         }
+
+        return layouts;
     };
 
-    const getEditLayout = (property?: string): false | Omit<EditLayout, 'name'> => {
+    const getEditLayout = (property: string): false | Omit<EditLayout, 'name'> => {
         let layout: false | Omit<EditLayout, 'name'> = false;
-        const editLayouts = flattenEditLayout();
+
+        const editLayouts = flattenEditLayouts();
         for (const k of editLayouts) {
             if (k.name === property) {
                 layout = { size: k.size };
@@ -78,9 +100,22 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
         return layout;
     };
 
+    const getGridLayout = (property: string): false | Layout => {
+        let layout: false | Layout = false;
+
+        const gridLayouts = calculateGridLayouts();
+        for (const grid of gridLayouts) {
+            if (grid.i === property) {
+                layout = grid;
+            }
+        }
+
+        return layout;
+    };
+
     /**
-     * Creates a more easily consumable format
-     * so the react component can map over it's properties easier
+     * Creates a more easily consumable format so the react component can map
+     * over the content properties easier
      */
     const buildContentData = (): ContentData[] => {
         const data: ContentData[] = [];
@@ -95,9 +130,9 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
                     metadata: metadatas[property],
                     layouts: {
                         list: layouts.list.includes(property),
-                        edit: getEditLayout(),
+                        edit: getEditLayout(property),
                         editRelations: layouts.editRelations.includes(property),
-                        grid: { i: 'c', x: 0, y: 0, w: 1, h: 2 },
+                        grid: getGridLayout(property),
                     },
                 };
                 data.push(contentData);
