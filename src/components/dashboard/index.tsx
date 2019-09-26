@@ -4,7 +4,7 @@ import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
 import { login } from '../../services/login.service';
 import { ContentTypeItems } from '../../pages/content-types-items.page';
-import { ExperienceEditorPage } from '../../pages/experience-editor.page';
+import { ExperienceEditor } from '../../components/experience-editor';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
@@ -15,7 +15,6 @@ export const Dashboard = () => {
 
     const getContentTypes = async () => {
         const types = await strapiService.get('content-manager/content-types');
-        console.log(types);
         setContentTypes(types.data);
     };
 
@@ -42,14 +41,13 @@ export const Dashboard = () => {
                     })}
                 </ul>
             </div>
-            <div className="fl w-80 bg-light-gray">
+            <div className="fl w-80">
                 {/* <BasicLayout></BasicLayout> */}
                 <Switch>
                     <Route exact={true} path="/dashboard/:contentType" component={ContentTypeItems} />
-                    <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditorPage} />
+                    <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
                 </Switch>
             </div>
         </article>
     );
-    // <JsonStringify {...contentTypes}></JsonStringify>
 };

@@ -12,7 +12,7 @@ export const JsonStringify: FC<any> = props => {
                     padding: '.5rem',
                 }}
             >
-                <strong>props</strong> = {JSON.stringify(props, null, 2)}
+                <strong>props</strong> = {JSON.stringify(props, null, 4)}
             </pre>
         </div>
     );
