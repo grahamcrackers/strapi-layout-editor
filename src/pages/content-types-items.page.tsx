@@ -18,6 +18,7 @@ export const ContentTypeItems = props => {
         const getContentTypesItems = async () => {
             const contentTypes = await strapiService.get(`content-manager/content-types/${contentType}?`);
             setSchema(contentTypes.data);
+
             const contentTypeCount = await strapiService.get(
                 `content-manager/explorer/${contentType}/count?_limit=10&_sort=id:ASC&source=content-manager&_start=0`,
             );

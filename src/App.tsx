@@ -1,35 +1,24 @@
 import React from 'react';
 import 'react-grid-layout/css/styles.css';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
-import { AuthButton } from './common/auth-button';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { PrivateRoute } from './common/private-route';
 import { Dashboard } from './components/dashboard';
+import { NavBar } from './components/nav-bar';
 import { LoginPage } from './pages/login.page';
 import { Protected } from './pages/protected.page';
 import { Public } from './pages/public.page';
+import { BasicLayout } from './components/grid-layout';
 
 const App: React.FC = () => {
     return (
         <Router>
-            <div>
-                <AuthButton />
-                <ul>
-                    <li>
-                        <Link to="/public">Public Page</Link>
-                    </li>
-                    <li>
-                        <Link to="/protected">Protected Page</Link>
-                    </li>
-                    <li>
-                        <Link to="/dashboard">Dashboard</Link>
-                    </li>
-                </ul>
-                <Route path="/public" component={Public} />
-                <Route path="/login" component={LoginPage} />
-                <PrivateRoute path="/protected" component={Protected} />
-                <PrivateRoute path="/dashboard" component={Dashboard} />
-                {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
-            </div>
+            <NavBar />
+            <Route path="/public" component={Public} />
+            <Route path="/login" component={LoginPage} />
+
+            <PrivateRoute path="/protected" component={Protected} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/basic-layout" component={BasicLayout} />
         </Router>
     );
 };

@@ -21,7 +21,6 @@ export const ContentTypeTableBody = ({ layouts, items }: Props) => {
                 if (layouts.list.includes(property)) {
                     newObj[`${property}`] = row[property];
                 }
-                // console.log(`${property}: ${row[property]}`);
             }
             rows.push(newObj);
         });
