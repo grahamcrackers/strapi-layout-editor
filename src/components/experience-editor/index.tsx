@@ -1,47 +1,44 @@
 /* eslint-disable array-callback-return */
 import React from 'react';
+import RGL, { WidthProvider } from 'react-grid-layout';
 import { useParams } from 'react-router-dom';
-import { JsonStringify } from '../../common/json-stringify';
-import { useContentData } from './useContentData';
-import ReactGridLayout from 'react-grid-layout';
+import { useTraceUpdate } from '../../common/hooks/useTraceUpdate';
 import { StringifyLayout } from './stringify-layout';
+import { useContentData } from './useContentData';
 
-import './index.css';
 import './example-styles.css';
+import './index.css';
+
+const ReactGridLayout = WidthProvider(RGL);
 
 export const ExperienceEditor = props => {
+    useTraceUpdate(props);
     const { contentType, itemId } = useParams();
-    const notAllowed: string[] = ['id', 'createdAt', 'updatedAt'];
-    const { metadata, original, data } = useContentData(contentType, itemId, notAllowed);
+    const { data, layout, setLayout } = useContentData(contentType, itemId);
 
     return (
-        <section className="mw5 mw7-ns">
+        <section>
             <h1 className="mv0">{`${contentType}: ${itemId}`}</h1>
             <p className="lh-copy measure black-50 mt0">Experience Editor</p>
 
-            <ul className="list pl0">
-                {/* List Elements and their values */}
-                {data.map((d, index) => {
+            <StringifyLayout layout={layout} />
+            <ReactGridLayout
+                layout={layout}
+                onLayoutChange={layouts => {
+                    setLayout(layouts);
+                }}
+                cols={12}
+                rowHeight={30}
+            >
+                {data.map(d => {
                     return (
-                        <li className="pa3 pa4-ns bb b--black-10">
-                            <b className="db f3 mb1">{d.key}</b>
-                            <span className="f5 db lh-copy measure">{d.value}</span>
-                        </li>
-                    );
-                })}
-            </ul>
-            <StringifyLayout layout={[]} />
-            <ReactGridLayout layout={[]} cols={12} rowHeight={30} width={1200}>
-                {data.map((d, index) => {
-                    return (
-                        <div key={index}>
+                        <div key={d.key}>
                             <span>{d.key}</span>
                         </div>
                     );
                 })}
             </ReactGridLayout>
-            <JsonStringify {...metadata} />
-            <JsonStringify {...original} />
+            {/* <JsonStringify {...data} /> */}
         </section>
     );
 };
