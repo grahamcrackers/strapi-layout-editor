@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { AttributeProps, EditLayout, MetaDataViews, Model } from '../../interfaces/strapi/strapi.interface';
 import { get } from '../../services/strapi.service';
@@ -23,22 +24,40 @@ export interface EditLayoutWithPos extends EditLayout {
     y: number;
 }
 
-export const useContentData = (contentType, itemId, ignoreProps: string[] = []) => {
-    const [contentModel, setContentModel] = useState<Model>();
+export const useContentData = (contentType, itemId) => {
+    const ignoreProps: string[] = ['id', 'createdAt', 'updatedAt'];
+    const [contentModel, setContentModel] = useState<Model>({} as Model);
     const [content, setContent] = useState<any>({});
 
+    const [contentData, setContentData] = useState<ContentData[]>([]);
+    const [layouts, setLayouts] = useState<Layout[]>([]);
+
     useEffect(() => {
-        // get model and model data
         const fetchData = async () => {
-            const model = await get(`content-manager/content-types/${contentType}`);
-            setContentModel(model.data);
+            const { data } = await get(`content-manager/content-types/${contentType}`);
+            setContentModel(data);
 
             const result = await get(`content-manager/explorer/${contentType}/${itemId}`);
             setContent(result);
         };
         fetchData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // only get data on component mount
     }, []);
+
+    // since we are using useState to store our api data, we want to update
+    // contentData and layouts once when an update is triggered, which should only be once
+    useEffect(() => {
+        const massageData = async () => {
+            if (contentModel.layouts) {
+                const gridLayouts = await calculateGridLayouts(contentModel.layouts.edit);
+                setLayouts(gridLayouts);
+
+                const contentData = await buildContentData(contentModel, content);
+                setContentData(contentData);
+            }
+        };
+        massageData();
+    }, [contentModel, content]);
 
     /**
      * Flatten the edit layout matrix but preserve the x, y positions in the array matrix
@@ -63,28 +82,25 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
      * Does the same thing as flattenEditLayouts() but will also provide the width and height for
      * react-grid-layout based on a 12 row grid
      */
-    const calculateGridLayouts = (): Layout[] => {
-        const layouts: Layout[] = [];
-        if (contentModel) {
-            const editLayouts = contentModel.layouts.edit;
+    const calculateGridLayouts = async (editLayouts: EditLayout[][]): Promise<Layout[]> => {
+        const gridLayouts: Layout[] = [];
 
-            for (const yPos in editLayouts) {
-                const editKey = editLayouts[yPos];
-                for (const xPos in editKey) {
-                    const obj = editKey[xPos];
+        for (const yPos in editLayouts) {
+            const editKey = editLayouts[yPos];
+            for (const xPos in editKey) {
+                const obj = editKey[xPos];
 
-                    /* 
-                       It looks like strapi bases it's width on a 12 col layout, so we are using the size from the 
-                       metadata. Height is set to 1 as a default to lay out the data on the page. 
-                       TODO: if we want to open this up to be actually customizable, we need to customize
-                       to different column sizes.                       
-                    */
-                    layouts.push({ i: obj.name, x: +xPos, y: +yPos, w: obj.size, h: 1 });
-                }
+                /* 
+                    It looks like strapi bases it's width on a 12 col layout, so we are using the size from the 
+                    metadata. Height is set to 1 as a default to lay out the data on the page. 
+                    TODO: if we want to open this up to be actually customizable, we need to customize
+                    to different column sizes.                       
+                */
+                gridLayouts.push({ i: obj.name, x: +xPos, y: +yPos, w: obj.size, h: 1 });
             }
         }
 
-        return layouts;
+        return gridLayouts;
     };
 
     const getEditLayout = (property: string): false | Omit<EditLayout, 'name'> => {
@@ -103,7 +119,7 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
     const getGridLayout = (property: string): false | Layout => {
         let layout: false | Layout = false;
 
-        const gridLayouts = calculateGridLayouts();
+        const gridLayouts = layouts;
         for (const grid of gridLayouts) {
             if (grid.i === property) {
                 layout = grid;
@@ -117,10 +133,10 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
      * Creates a more easily consumable format so the react component can map
      * over the content properties easier
      */
-    const buildContentData = (): ContentData[] => {
+    const buildContentData = async (contentModel, content): Promise<ContentData[]> => {
         const data: ContentData[] = [];
 
-        if (contentModel && content) {
+        if (contentModel.schema) {
             const { schema, metadatas, layouts } = contentModel;
             for (const property in schema.attributes) {
                 const contentData: ContentData = {
@@ -143,8 +159,11 @@ export const useContentData = (contentType, itemId, ignoreProps: string[] = []) 
     };
 
     return {
+        // Expose metadata and original data just as a reference
         metadata: contentModel,
         original: content,
-        data: buildContentData(),
+        data: contentData,
+        layout: layouts,
+        setLayout: setLayouts,
     };
 };
