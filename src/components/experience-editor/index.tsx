@@ -9,14 +9,12 @@ import { useContentData, ContentData } from './useContentData';
 import './example-styles.css';
 import './index.css';
 
-import { JsonStringify } from '../../common/json-stringify';
-
 const ReactGridLayout = WidthProvider(RGL);
 
 export const ExperienceEditor = props => {
     useTraceUpdate(props);
     const { contentType, itemId } = useParams();
-    const { metadata, original, data, layout, setLayout } = useContentData(contentType, itemId);
+    const { data, layout, setLayout } = useContentData(contentType, itemId);
 
     return (
         <section>
