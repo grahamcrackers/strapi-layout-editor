@@ -1,13 +1,15 @@
 /* eslint-disable array-callback-return */
 import React from 'react';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import RGL, { WidthProvider, Layout } from 'react-grid-layout';
 import { useParams } from 'react-router-dom';
 import { useTraceUpdate } from '../../common/hooks/useTraceUpdate';
 import { StringifyLayout } from './stringify-layout';
 import { useContentData, ContentData } from './useContentData';
+import { Page } from '../../ui/page';
 
-import './example-styles.css';
 import './index.css';
+// import './example-styles.css';
+// import 'react-grid-layout/css/styles.css';
 
 const ReactGridLayout = WidthProvider(RGL);
 
@@ -17,9 +19,9 @@ export const ExperienceEditor = props => {
     const { data, layout, setLayout } = useContentData(contentType, itemId);
 
     return (
-        <section>
-            <h1 className="mv0">{`${contentType}: ${itemId}`}</h1>
-            <p className="lh-copy measure black-50 mt0">Experience Editor</p>
+        <Page className="p-4 w-full">
+            <h2 className="mb-1 leading-none text-color-900 text-3xl font-normal">Experience Editor</h2>
+            <p className="mt-0 mb-4 text-gray-600">{`${contentType}: ${itemId}`}</p>
             {/* List Elements and their values */}
             {/* <ul className="list pl0">
                 {data.map(d => {
@@ -31,28 +33,39 @@ export const ExperienceEditor = props => {
                     );
                 })}
             </ul> */}
-            <StringifyLayout layout={layout} />
+            {/* <StringifyLayout layout={layout} /> */}
+            <div className="bg-gray-300">
+                Displayed as <code>[x, y, w, h]</code>:
+                <div className="columns">
+                    {layout.map((l: Layout) => (
+                        <div className="layoutItem" key={l.i}>
+                            <b>{l.i}</b>: [{l.x}, {l.y}, {l.w}, {l.h}]
+                        </div>
+                    ))}
+                </div>
+            </div>
             <ReactGridLayout
                 layout={layout}
                 onLayoutChange={layouts => {
                     setLayout(layouts);
                 }}
+                className="bg-gray-200"
             >
-                {data.map((d: ContentData) => {
-                    return (
-                        <div key={d.key}>
-                            <span>{d.key}</span>
-                            <div>
+                {data
+                    .filter((d: ContentData) => d.attributes.type !== 'relation')
+                    .map((d: ContentData) => {
+                        return (
+                            <div key={d.key} className="rounded shadow bg-white">
+                                <span>{d.key}</span>
                                 <pre>
                                     <code>{JSON.stringify(d.value)}</code>
                                 </pre>
                             </div>
-                        </div>
-                    );
-                })}
+                        );
+                    })}
             </ReactGridLayout>
 
             {/* <JsonStringify {...data} /> */}
-        </section>
+        </Page>
     );
 };

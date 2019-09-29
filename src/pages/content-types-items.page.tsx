@@ -4,17 +4,17 @@ import * as strapiService from '../services/strapi.service';
 import { JsonStringify } from '../common/json-stringify';
 import { ContentTypeTableHeaders } from '../components/content-type-table/table-headers';
 import { ContentTypeTableBody } from '../components/content-type-table/table-body';
+import { useParams } from 'react-router-dom';
+import { Table } from '../ui/table';
 
-export const ContentTypeItems = props => {
-    const [contentType, setContentType] = useState('');
+export const ContentTypeItems = () => {
+    const { contentType } = useParams();
+
     const [schema, setSchema] = useState<any>({});
     const [count, setCount] = useState(0);
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        const { contentType } = props.match.params;
-        setContentType(contentType);
-
         const getContentTypesItems = async () => {
             const contentTypes = await strapiService.get(`content-manager/content-types/${contentType}?`);
             setSchema(contentTypes.data);
@@ -30,22 +30,21 @@ export const ContentTypeItems = props => {
         };
         getContentTypesItems();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.match.params.contentType]);
+    }, [contentType]);
 
     return (
-        <div>
-            <h1 className="f1 ttu tracked-tight mt0 mb0">{contentType}</h1>
-            <p className="mt0">{count} entries found</p>
-            <div className="pa4">
-                <div className="overflow-auto">
-                    <table className="f6 w-100 mw8 center" cellSpacing="0">
-                        <ContentTypeTableHeaders layouts={schema.layouts} metadatas={schema.metadatas} />
-                        <ContentTypeTableBody layouts={schema.layouts} items={items} />
-                    </table>
-                </div>
-            </div>
-            <JsonStringify {...schema} />
-            <JsonStringify {...items} />
+        <div className="p-4">
+            <h1 className="mb-1 leading-none text-color-900 text-4xl font-light capitalize">{contentType}</h1>
+            <p className="mt-0 mb-4 text-gray-600">{count} entries found</p>
+            <hr className="my-8 border-b-2 border-gray-200" />
+
+            <Table>
+                <ContentTypeTableHeaders layouts={schema.layouts} metadatas={schema.metadatas} />
+                <ContentTypeTableBody layouts={schema.layouts} items={items} />
+            </Table>
+
+            {/* <JsonStringify {...schema} /> */}
+            {/* <JsonStringify {...items} /> */}
         </div>
     );
 };

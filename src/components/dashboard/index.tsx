@@ -5,13 +5,14 @@ import { Link, Route, Switch } from 'react-router-dom';
 import { login } from '../../services/login.service';
 import { ContentTypeItems } from '../../pages/content-types-items.page';
 import { ExperienceEditor } from '../../components/experience-editor';
+import { Page } from '../../ui/page';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
 
-    const loginUser = async () => {
-        await login(config.strapi.username as string, config.strapi.password as string);
-    };
+    // const loginUser = async () => {
+    //     await login(config.strapi.username as string, config.strapi.password as string);
+    // };
 
     const getContentTypes = async () => {
         const types = await strapiService.get('content-manager/content-types');
@@ -21,33 +22,34 @@ export const Dashboard = () => {
     // move to a login page but lol who has the time
     useEffect(() => {
         const initialize = async () => {
-            await loginUser();
+            // await loginUser();
             await getContentTypes();
         };
         initialize();
     }, []);
 
     return (
-        <article className="cf">
-            <div className="fl w-20 bg-near-white t">
-                <h1 className="f4 bold center mw6">Content Types</h1>
-                <ul className="list pl0 ml0 center mw6 ba b--light-silver br2">
-                    {contentTypes.map((type: any) => {
+        <div className="flex">
+            <aside className="w-64 p-4">
+                <h3 className="px-4 py-2 leading-none text-color-900 text-2xl font-normal">Content Types</h3>
+                <ul className="border rounded">
+                    {contentTypes.map((type: any, index) => {
                         return (
-                            <li key={`${type.uid}-key`} className="ph3 pv3 bb b--light-silver">
+                            <li
+                                key={`${type.uid}`}
+                                className={`px-4 py-2 border-t ${index === 0 && 'first:border-t-0'}`}
+                            >
                                 <Link to={`/dashboard/${type.uid}`}>{type.label}</Link>
                             </li>
                         );
                     })}
                 </ul>
-            </div>
-            <div className="fl w-80">
-                {/* <BasicLayout></BasicLayout> */}
-                <Switch>
-                    <Route exact={true} path="/dashboard/:contentType" component={ContentTypeItems} />
-                    <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
-                </Switch>
-            </div>
-        </article>
+            </aside>
+
+            <Switch>
+                <Route exact={true} path="/dashboard/:contentType" component={ContentTypeItems} />
+                <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
+            </Switch>
+        </div>
     );
 };
