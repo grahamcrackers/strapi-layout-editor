@@ -37,13 +37,16 @@ export const ContentTypeTableBody = ({ layouts, items }: Props) => {
     }, [layouts, items]);
 
     return (
-        <tbody className="lh-copy">
+        <tbody className="align-baseline">
             {rows &&
                 rows.map(row => (
-                    <tr key={row.id} className="stripe-dark">
+                    <tr key={row.id}>
                         {layouts.list.map((attribute, index) => {
                             return (
-                                <td key={index} className="pa3">
+                                <td
+                                    key={index}
+                                    className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-pre"
+                                >
                                     {attribute === 'id' ? (
                                         <Link to={`${location.pathname}/${row[attribute]}`}>{row[attribute]}</Link>
                                     ) : (

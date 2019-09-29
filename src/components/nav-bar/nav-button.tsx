@@ -9,7 +9,7 @@ export const NavButton: FC<{}> = () => {
 
     return (
         <button
-            className="f6 link dim br1 ba ph3 pv2 mb2 dib mid-gray"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={() => {
                 fakeAuth.signout(() => history.push('/'));
             }}

@@ -27,7 +27,7 @@ export const ContentTypeTableHeaders = ({ layouts, metadatas }: Props) => {
         <thead>
             <tr className="striped-dark">
                 {headers.map((header, index) => (
-                    <th key={index} className="fw6 tl pa3 bg-white">
+                    <th key={index} className="text-sm font-semibold text-gray-700 p-2 bg-gray-100">
                         {header.label}
                     </th>
                 ))}

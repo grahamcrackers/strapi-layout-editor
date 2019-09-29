@@ -3,6 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { login } from '../services/login.service';
 import { fakeAuth } from '../common/fake-auth';
 import { RouteComponentProps } from 'react-router';
+import { Page } from '../ui/page';
 
 interface LoginPageState {
     username: string;
@@ -25,7 +26,7 @@ export class LoginPage extends Component<RouteComponentProps, any> {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
-
+        console.log(this.state);
         this.setState({
             [name]: value,
         });
@@ -40,50 +41,63 @@ export class LoginPage extends Component<RouteComponentProps, any> {
     };
 
     render() {
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        const { from } = this.props.location.state || { from: { pathname: '/dashboard' } };
         const { redirectToReferrer } = this.state;
 
         if (redirectToReferrer) return <Redirect to={from} />;
 
         return (
-            <main className="pa4 black-80">
-                <form className="measure center" onSubmit={this.handleSubmit}>
-                    <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                        <legend className="f4 fw6 ph0 mh0">Sign In</legend>
-                        <div className="mt3">
-                            <label className="db fw6 lh-copy f6" htmlFor="username">
-                                Email
+            <Page className="flex bg-indigo-200 h-full justify-center items-center">
+                {/* <div className="text-gray-700 text-center bg-indigo-400 px-4 py-2 m-2">1</div>
+                <div className="text-gray-700 text-center bg-indigo-400 px-4 py-2 m-2">2</div>
+                <div className="text-gray-700 text-center bg-indigo-400 px-4 py-2 m-2">3</div> */}
+
+                <div className="w-full max-w-xs">
+                    <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={this.handleSubmit}>
+                        <div className="mb-4">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
+                                Username
                             </label>
                             <input
-                                className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                                type="text"
+                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                 name="username"
                                 id="username"
+                                type="text"
+                                placeholder="Username"
                                 onChange={this.handleInputChange}
                             />
                         </div>
-                        <div className="mv3">
-                            <label className="db fw6 lh-copy f6" htmlFor="password">
+                        <div className="mb-6">
+                            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                                 Password
                             </label>
                             <input
-                                className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100"
-                                type="password"
+                                className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                                 name="password"
                                 id="password"
+                                type="password"
+                                placeholder="******************"
                                 onChange={this.handleInputChange}
                             />
+                            <p className="text-red-500 text-xs italic">Please choose a password.</p>
                         </div>
-                    </fieldset>
-                    <div className="">
-                        <input
-                            className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib"
-                            type="submit"
-                            value="Sign in"
-                        />
-                    </div>
-                </form>
-            </main>
+                        <div className="flex items-center justify-between">
+                            <button
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                type="submit"
+                            >
+                                Sign In
+                            </button>
+                            {/* <a
+                                className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
+                                href="#"
+                            >
+                                Forgot Password?
+                            </a> */}
+                        </div>
+                    </form>
+                </div>
+            </Page>
         );
     }
 }
