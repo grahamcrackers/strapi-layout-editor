@@ -14,7 +14,7 @@ const App: React.FC = () => {
     return (
         <Router>
             {/* flex flex-row bg-white border-b border-gray-400 fixed top-0 inset-x-0 z-100 h-16 items-center */}
-            <header className="fixed flex flex-row h-16 w-full shadow">
+            <header className="fixed flex flex-row h-16 w-full shadow bg-white">
                 <Link to="/dashboard" className="flex flex-row text-center px-4 py-2 m-2">
                     <img src={ServiceMasterLogo} alt="ServiceMaster Logo" />
                     <img src={plus} className="px-3" alt="plus" />
