@@ -4,7 +4,7 @@ module.exports = {
         borderWidth: ['first', 'last']
     },
     plugins: [
-        require('./plugins/pagination'),
+        require('./plugins/styles/pagination'),
     ],
     corePlugins: {
         float: false,
