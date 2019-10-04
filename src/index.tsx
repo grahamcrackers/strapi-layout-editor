@@ -4,14 +4,25 @@ import { render } from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import './styles/index.css';
+import { AuthDataProvider } from './common/hooks/useAuthentication';
 
-render(<App />, document.getElementById('root'));
+render(
+    <AuthDataProvider>
+        <App />
+    </AuthDataProvider>,
+    document.getElementById('root'),
+);
 
 // Enable Hot Module Reloading
 if ((module as any).hot) {
     (module as any).hot.accept('./App', () => {
         const NewApp = require('./App').default;
-        render(<NewApp />, document.getElementById('root'));
+        render(
+            <AuthDataProvider>
+                <NewApp />
+            </AuthDataProvider>,
+            document.getElementById('root'),
+        );
     });
 }
 
