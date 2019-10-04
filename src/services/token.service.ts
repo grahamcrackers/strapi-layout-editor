@@ -1,10 +1,13 @@
 const tokenLabel = 'token';
 
-export const saveToken = (authToken: string) => {
+interface Token {
+    jwt: string;
+}
+
+export const setToken = (authToken: string) => {
     localStorage.setItem(tokenLabel, authToken);
 };
 
 export const getToken = (): string | null => {
-    const token = localStorage.getItem(tokenLabel);
-    return token;
+    return localStorage.getItem(tokenLabel);
 };

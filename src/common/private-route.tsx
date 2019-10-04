@@ -1,14 +1,15 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-// import { fakeAuth } from './fake-auth';
-import { getToken } from '../services/token.service';
+import { useAuthentication } from './hooks/useAuthentication';
 
 export function PrivateRoute({ component: Component, ...rest }) {
+    const { isAuthenticated } = useAuthentication();
+    console.log(isAuthenticated);
     return (
         <Route
             {...rest}
             render={props =>
-                getToken() ? (
+                isAuthenticated ? (
                     <Component {...props} />
                 ) : (
                     <Redirect
