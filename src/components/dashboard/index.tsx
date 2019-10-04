@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { config } from '../../config/config';
 import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
-import { login } from '../../services/login.service';
 import { ContentTypeItems } from '../../pages/content-types-items.page';
 import { ExperienceEditor } from '../../components/experience-editor';
-import { Page } from '../../ui/page';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
-
-    // const loginUser = async () => {
-    //     await login(config.strapi.username as string, config.strapi.password as string);
-    // };
 
     const getContentTypes = async () => {
         const types = await strapiService.get('content-manager/content-types');
         setContentTypes(types.data);
     };
 
-    // move to a login page but lol who has the time
     useEffect(() => {
         const initialize = async () => {
-            // await loginUser();
             await getContentTypes();
         };
         initialize();

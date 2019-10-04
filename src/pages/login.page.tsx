@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
-import { login } from '../services/login.service';
-import { fakeAuth } from '../common/fake-auth';
-import { RouteComponentProps } from 'react-router';
 import { Page } from '../ui/page';
 import { LoginForm } from '../components/login-form/login-form';
 import { useAuthentication } from '../common/hooks/useAuthentication';
@@ -12,13 +9,6 @@ interface LoginPageState {
     password: string;
     redirectToReferrer: boolean;
 }
-// const handleSubmit = async event => {
-// event.preventDefault();
-// fakeAuth.authenticate(async () => {
-//     await login(this.state.username, this.state.password);
-//     this.setState({ redirectToReferrer: true });
-// });
-// };
 
 export const LoginPage = () => {
     const location = useLocation();
