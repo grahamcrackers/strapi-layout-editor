@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import { ContentTypeTable } from '../components/content-type-table';
-import * as strapiService from '../services/strapi.service';
-import { JsonStringify } from '../common/json-stringify';
 import { ContentTypeTableHeaders } from '../components/content-type-table/table-headers';
 import { ContentTypeTableBody } from '../components/content-type-table/table-body';
 import { useParams } from 'react-router-dom';
