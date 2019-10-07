@@ -77,14 +77,19 @@ export const ContentTypeItems = () => {
     // get data on load
     useEffect(() => {
         const getContentTypesItems = async () => {
-            const schema = await getContentSchema(contentType);
-            setSchema(schema.data.data);
+            if (contentType) {
+                const schema = await getContentSchema(contentType);
+                setSchema(schema.data.data);
 
-            const { data } = await getContentCount(contentType);
-            const total = totalPages(data.count, pagination.size);
+                const { data } = await getContentCount(contentType);
+                const total = totalPages(data.count, pagination.size);
 
-            const response = await getContentItems(contentType, { limit: pagination.size, start: pagination.index });
-            setPagination({ ...pagination, data: response.data, count: data.count, total });
+                const response = await getContentItems(contentType, {
+                    limit: pagination.size,
+                    start: pagination.index,
+                });
+                setPagination({ ...pagination, data: response.data, count: data.count, total });
+            }
         };
         getContentTypesItems();
         // eslint-disable-next-line react-hooks/exhaustive-deps
