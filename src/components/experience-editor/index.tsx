@@ -11,7 +11,7 @@ import './index.css';
 import { config } from '../../config/config';
 
 const postModelLayouts = async (model, modelId, layoutJson: Layout[]) => {
-    const url = `${config.strapi.endpoint}/content-manager/explorer/modellayout?source=content-manager`;
+    const url = `${config.strapi.endpoint}/content-manager/explorer/modellayout?source=layout-editor`;
     return await axios.post(url, { model, modelId, layoutJson });
 };
 
