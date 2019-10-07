@@ -69,7 +69,7 @@ const getContentItems = async (model: string, params: StrapiGetParams = {}) => {
 };
 
 export const ContentTypeItems = () => {
-    const { contentType } = useParams<string>('');
+    const { contentType } = useParams();
 
     const [pagination, setPagination] = useState<Pagination>(initialPaginate);
     const [schema, setSchema] = useState<any>({});
