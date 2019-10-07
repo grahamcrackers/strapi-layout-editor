@@ -69,7 +69,7 @@ const getContentItems = async (model: string, params: StrapiGetParams = {}) => {
 };
 
 export const ContentTypeItems = () => {
-    const { contentType } = useParams();
+    const { contentType } = useParams<{ contentType: string }>();
 
     const [pagination, setPagination] = useState<Pagination>(initialPaginate);
     const [schema, setSchema] = useState<any>({});
@@ -77,19 +77,17 @@ export const ContentTypeItems = () => {
     // get data on load
     useEffect(() => {
         const getContentTypesItems = async () => {
-            if (contentType) {
-                const schema = await getContentSchema(contentType);
-                setSchema(schema.data.data);
+            const schema = await getContentSchema(contentType);
+            setSchema(schema.data.data);
 
-                const { data } = await getContentCount(contentType);
-                const total = totalPages(data.count, pagination.size);
+            const { data } = await getContentCount(contentType);
+            const total = totalPages(data.count, pagination.size);
 
-                const response = await getContentItems(contentType, {
-                    limit: pagination.size,
-                    start: pagination.index,
-                });
-                setPagination({ ...pagination, data: response.data, count: data.count, total });
-            }
+            const response = await getContentItems(contentType, {
+                limit: pagination.size,
+                start: pagination.index,
+            });
+            setPagination({ ...pagination, data: response.data, count: data.count, total });
         };
         getContentTypesItems();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,11 +116,9 @@ export const ContentTypeItems = () => {
         const newIndex = index;
         const sort = 'id:ASC';
         const { size } = pagination;
-        // why do I need this?
-        if (contentType) {
-            const { data } = await getContentItems(contentType, { limit: size, sort, start: +newIndex * size });
-            setPagination({ ...pagination, data, index: newIndex as number });
-        }
+
+        const { data } = await getContentItems(contentType, { limit: size, sort, start: +newIndex * size });
+        setPagination({ ...pagination, data, index: newIndex as number });
     };
 
     const pageButtons = pageArr(totalPages(pagination.count, pagination.size));
