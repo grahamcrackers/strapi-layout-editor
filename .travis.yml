@@ -6,4 +6,6 @@ cache:
     directories:
         - node_modules
 script:
+    - tsc --version
+    - yarn tsc --version
     - yarn build

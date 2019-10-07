@@ -50,9 +50,10 @@ const getContentCount = async (model: string) => {
     return await axios.get(url);
 };
 
+// prepend the parameters with '_'
 const getParams = (params: StrapiGetParams) => {
     let prepend = {};
-    // prepend the parameters with '_'
+
     for (const param in params) {
         prepend = { ...prepend, [`_${param}`]: params[param] };
     }
