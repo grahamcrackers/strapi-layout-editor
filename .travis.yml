@@ -1,8 +1,9 @@
 language: node_js
 node_js:
     - '10'
-install: yarn
-cache: yarn
+cache:
+    yarn: true
+    directories:
+        - node_modules
 script:
-    - echo yarn --version
-    - npm run build
+    - yarn build
