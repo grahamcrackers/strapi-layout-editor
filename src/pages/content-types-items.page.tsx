@@ -69,7 +69,7 @@ const getContentItems = async (model: string, params: StrapiGetParams = {}) => {
 };
 
 export const ContentTypeItems = () => {
-    const { contentType } = useParams();
+    const { contentType } = useParams<string>('');
 
     const [pagination, setPagination] = useState<Pagination>(initialPaginate);
     const [schema, setSchema] = useState<any>({});
@@ -118,9 +118,11 @@ export const ContentTypeItems = () => {
         const newIndex = index;
         const sort = 'id:ASC';
         const { size } = pagination;
-
-        const { data } = await getContentItems(contentType, { limit: size, sort, start: +newIndex * size });
-        setPagination({ ...pagination, data, index: newIndex as number });
+        // why do I need this?
+        if (contentType) {
+            const { data } = await getContentItems(contentType, { limit: size, sort, start: +newIndex * size });
+            setPagination({ ...pagination, data, index: newIndex as number });
+        }
     };
 
     const pageButtons = pageArr(totalPages(pagination.count, pagination.size));
