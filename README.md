@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/grahamcrackers/strapi-layout-editor.svg?branch=develop)](https://travis-ci.org/grahamcrackers/strapi-layout-editor)
+
 ## An Experience Editor for strapi projects
 
 Uses [`react-grid-layout`](https://www.npmjs.com/package/react-grid-layout) for ordering strapi content.
