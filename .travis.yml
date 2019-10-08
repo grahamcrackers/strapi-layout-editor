@@ -3,16 +3,14 @@ node_js:
     - '10'
 cache: yarn
 script:
-    - tsc --version
-    - yarn tsc --version
     - yarn build
-
 deploy:
+    on:
+        branch: develop
     provider: s3
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
-    bucket: $AWS_S3_Bucket
-    skip_cleanup: true
     region: $AWS_REGION
-    on:
-        branch: develop
+    bucket: $AWS_S3_BUCKET
+    local_dir: build
+    skip_cleanup: true
