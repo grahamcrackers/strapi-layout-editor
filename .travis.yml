@@ -13,3 +13,4 @@ deploy:
     bucket: $AWS_S3_BUCKET
     local_dir: build
     skip_cleanup: true
+    acl: public_read
