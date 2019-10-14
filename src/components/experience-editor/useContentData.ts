@@ -4,6 +4,13 @@ import { AttributeProps, EditLayout, MetaDataViews, Model } from '../../interfac
 import { get } from '../../services/strapi.service';
 import { Layout } from 'react-grid-layout';
 
+export interface ModelLayout {
+    id: string;
+    modelType: string;
+    modelId: string;
+    layoutJson: Layout[];
+}
+
 export interface ContentDataLayouts {
     list: boolean;
     edit: false | Omit<EditLayout, 'name'>;
@@ -32,6 +39,8 @@ export const useContentData = (contentType, itemId) => {
     const [contentData, setContentData] = useState<ContentData[]>([]);
     const [layouts, setLayouts] = useState<Layout[]>([]);
 
+    const [existingLayouts, setExistingLayouts] = useState<ModelLayout>();
+
     useEffect(() => {
         const fetchData = async () => {
             const { data } = await get(`content-manager/content-types/${contentType}`);
@@ -39,6 +48,15 @@ export const useContentData = (contentType, itemId) => {
 
             const result = await get(`content-manager/explorer/${contentType}/${itemId}`);
             setContent(result);
+
+            // check to see if we already have any layouts
+            const existingLayouts: ModelLayout = await get(
+                `layout-editor/${contentType}/${itemId}/layouts?source=layout-editor`,
+            );
+
+            existingLayouts.layoutJson.length > 0 ? console.log('we got layouts') : console.log('no layouts yet');
+
+            setExistingLayouts(existingLayouts);
         };
         fetchData();
         // only get data on component mount
@@ -49,15 +67,20 @@ export const useContentData = (contentType, itemId) => {
     useEffect(() => {
         const massageData = async () => {
             if (contentModel.layouts) {
-                const gridLayouts = await calculateGridLayouts(contentModel.layouts.edit);
-                setLayouts(gridLayouts);
+                if (existingLayouts && existingLayouts.layoutJson) {
+                    setLayouts(existingLayouts.layoutJson);
+                } else {
+                    const gridLayouts = await calculateGridLayouts(contentModel.layouts.edit);
+
+                    setLayouts(gridLayouts);
+                }
 
                 const contentData = await buildContentData(contentModel, content);
                 setContentData(contentData);
             }
         };
         massageData();
-    }, [contentModel, content]);
+    }, [contentModel, content, existingLayouts]);
 
     /**
      * Flatten the edit layout matrix but preserve the x, y positions in the array matrix
@@ -104,6 +127,7 @@ export const useContentData = (contentType, itemId) => {
             }
         }
 
+        console.log(gridLayouts);
         return gridLayouts;
     };
 
