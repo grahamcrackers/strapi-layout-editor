@@ -2,11 +2,11 @@
 import React, { FC } from 'react';
 
 export const JsonStringify: FC<any> = props => {
-    let rest;
-    if (props.noData) {
-        const { data, noData, ...p } = props;
-        rest = p;
-    }
+    // let rest;
+    // if (props.noData) {
+    //     const { data, noData, ...p } = props;
+    //     rest = p;
+    // }
 
     return (
         <div style={{ margin: '1rem 0' }}>
@@ -22,7 +22,7 @@ export const JsonStringify: FC<any> = props => {
                 }}
             >
                 <code>
-                    <strong>props</strong> = {JSON.stringify(rest, null, 4)}
+                    <strong>props</strong> = {JSON.stringify(props, null, 4)}
                 </code>
             </pre>
         </div>

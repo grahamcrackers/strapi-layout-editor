@@ -17,7 +17,6 @@ const initialProps = {
 
 export const AuthContext = createContext<AuthContextProps>(initialProps);
 export const AuthDataProvider = props => {
-    console.log('AuthDataProvider');
     const [authData, setAuthData] = useState<AuthContextProps>(initialProps);
 
     /* The first time the component is rendered, it tries to
@@ -26,7 +25,7 @@ export const AuthDataProvider = props => {
      */
     useEffect(() => {
         const token = getToken();
-        console.log(token);
+
         if (token) {
             setAuthData({ ...authData, isAuthenticated: true, redirectToReferrer: true });
         }

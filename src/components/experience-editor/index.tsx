@@ -9,25 +9,28 @@ import axios from 'axios';
 
 import './index.css';
 import { config } from '../../config/config';
+import { JsonStringify } from 'common/json-stringify';
 
-const postModelLayouts = async (model, modelId, layoutJson: Layout[]) => {
+const postModelLayouts = async (modelType, modelId, layoutJson: Layout[]) => {
     const url = `${config.strapi.endpoint}/content-manager/explorer/modellayout?source=layout-editor`;
-    return await axios.post(url, { model, modelId, layoutJson });
+    return await axios.post(url, { modelType, modelId, layoutJson });
 };
 
 const ReactGridLayout = WidthProvider(RGL);
 
 export const ExperienceEditor = props => {
-    useTraceUpdate(props);
+    // useTraceUpdate(props);
     const { contentType, itemId } = useParams();
-    const { data, layout, setLayout } = useContentData(contentType, itemId);
+    const { metadata, data, layout, setLayout } = useContentData(contentType, itemId);
 
+    // console.log(layout);
     const saveModel = async () => {
         try {
             const response = await postModelLayouts(contentType, itemId, layout);
             console.log(response.data);
         } catch (err) {
             console.log(err);
+            throw new Error(err);
         }
     };
 
@@ -74,9 +77,21 @@ export const ExperienceEditor = props => {
                             </div>
                         );
                     })}
+                {data
+                    .filter((d: ContentData) => d.attributes.type === 'relation')
+                    .map((d: ContentData) => {
+                        return (
+                            <div key={d.key} className="rounded shadow bg-white">
+                                <span>{d.key}</span>
+                                {/* <pre>
+                                    <code>{JSON.stringify(d.value)}</code>
+                                </pre> */}
+                            </div>
+                        );
+                    })}
             </ReactGridLayout>
 
-            {/* <JsonStringify {...layout} /> */}
+            <JsonStringify {...metadata} />
         </Page>
     );
 };

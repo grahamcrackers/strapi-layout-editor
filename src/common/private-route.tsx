@@ -4,7 +4,7 @@ import { useAuthentication } from './hooks/useAuthentication';
 
 export function PrivateRoute({ component: Component, ...rest }) {
     const { isAuthenticated } = useAuthentication();
-    console.log(isAuthenticated);
+
     return (
         <Route
             {...rest}
