@@ -54,8 +54,6 @@ export const useContentData = (contentType, itemId) => {
                 `layout-editor/${contentType}/${itemId}/layouts?source=layout-editor`,
             );
 
-            existingLayouts.layoutJson.length > 0 ? console.log('we got layouts') : console.log('no layouts yet');
-
             setExistingLayouts(existingLayouts);
         };
         fetchData();

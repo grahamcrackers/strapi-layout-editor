@@ -13,6 +13,7 @@ interface LoginPageState {
 export const LoginPage = () => {
     const location = useLocation();
     const { redirectToReferrer } = useAuthentication();
+    console.log(location);
     const { from } = location.state || { from: { pathname: '/dashboard' } };
 
     if (redirectToReferrer) return <Redirect to={from} />;
