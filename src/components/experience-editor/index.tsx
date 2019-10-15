@@ -1,16 +1,13 @@
 /* eslint-disable array-callback-return */
-import React from 'react';
-import RGL, { WidthProvider, Layout } from 'react-grid-layout';
-import { useParams } from 'react-router-dom';
-import { useTraceUpdate } from '../../common/hooks/useTraceUpdate';
-import { useContentData, ContentData } from './useContentData';
-import { Page } from '../../ui/page';
 import axios from 'axios';
-
-import './index.css';
-import { config } from '../../config/config';
-import { JsonStringify } from 'common/json-stringify';
+import React from 'react';
 import { useAlert } from 'react-alert';
+import RGL, { Layout, WidthProvider } from 'react-grid-layout';
+import { useParams } from 'react-router-dom';
+import { config } from '../../config/config';
+import { Page } from '../../ui/page';
+import './index.css';
+import { ContentData, useContentData } from './useContentData';
 
 const postModelLayouts = async (modelType, modelId, layoutJson: Layout[]) => {
     const url = `${config.strapi.endpoint}/content-manager/explorer/modellayout?source=layout-editor`;
@@ -20,9 +17,8 @@ const postModelLayouts = async (modelType, modelId, layoutJson: Layout[]) => {
 const ReactGridLayout = WidthProvider(RGL);
 
 export const ExperienceEditor = props => {
-    // useTraceUpdate(props);
     const { contentType, itemId } = useParams();
-    const { metadata, data, layout, setLayout } = useContentData(contentType, itemId);
+    const { data, layout, setLayout } = useContentData(contentType, itemId);
     const alert = useAlert();
 
     const saveModel = async () => {
@@ -30,9 +26,7 @@ export const ExperienceEditor = props => {
             await postModelLayouts(contentType, itemId, layout);
             alert.success('Layouts Saved!');
         } catch (err) {
-            console.log(JSON.stringify(err));
             alert.error('Something went wrong');
-            // throw new Error(err);
         }
     };
 
@@ -73,28 +67,28 @@ export const ExperienceEditor = props => {
                         return (
                             <div key={d.key} className="rounded shadow bg-white">
                                 <span>{d.key}</span>
-                                <pre>
-                                    <code>{JSON.stringify(d.value)}</code>
-                                </pre>
+                                <div>{d.value}</div>
                             </div>
                         );
                     })}
                 {data
-                    .filter((d: ContentData) => d.attributes.type === 'relation')
+                    .filter((d: ContentData) => d.attributes.type === 'relation' && d.value && d.value.length)
                     .map((d: ContentData) => {
-                        return (
-                            <div key={d.key} className="rounded shadow bg-white">
-                                <span>{d.key}</span>
-                                {/* <pre>
-                                    <code>{JSON.stringify(d.value)}</code>
-                                </pre> */}
-                            </div>
-                        );
+                        return d.value.map(r => {
+                            console.log(r._id);
+                            return (
+                                <div key={r.id} className="rounded shadow bg-white">
+                                    <p>
+                                        {d.key}:{r.id}
+                                    </p>
+                                    <div key={r._id}>{`${r.name ? r.name : ''} ${r.title ? r.title : ''} ${
+                                        r.url ? r.url : ''
+                                    } `}</div>
+                                </div>
+                            );
+                        });
                     })}
             </ReactGridLayout>
-
-            <aside className="w-64"></aside>
-            {/* <JsonStringify {...metadata} /> */}
         </Page>
     );
 };

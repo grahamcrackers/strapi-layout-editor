@@ -23,7 +23,7 @@ const App: React.FC = () => {
             <Router>
                 <NavBar />
                 <main className="h-full pt-16">
-                    <Route path="/" component={() => <Redirect to="/dashboard" />} />
+                    <Route exact path="/" component={() => <Redirect to="/dashboard" />} />
                     <Route path="/login" component={LoginPage} />
                     <PrivateRoute path="/dashboard" component={Dashboard} />
                 </main>
