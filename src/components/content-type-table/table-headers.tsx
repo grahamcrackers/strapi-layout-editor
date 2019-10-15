@@ -18,6 +18,7 @@ export const ContentTypeTableHeaders = ({ layouts, metadatas }: Props) => {
                     contentTypeHeaders.push(header);
                 }
             });
+
             setHeaders([...contentTypeHeaders]);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
