@@ -134,39 +134,37 @@ export const ContentTypeItems = () => {
                 <ContentTypeTableBody layouts={schema.layouts} items={pagination.data} />
             </Table>
 
-            <div>
-                <ul className="pagination mt-2">
-                    {pageButtons.map((value, index) => {
-                        if (value === PREV) {
-                            return (
-                                <li key={index} className="page-item">
-                                    <button className="page-link" onClick={() => handlePrevious()}>
-                                        {value}
-                                    </button>
-                                </li>
-                            );
-                        }
-
-                        if (value === NEXT) {
-                            return (
-                                <li key={index} className="page-item">
-                                    <button className="page-link" onClick={() => handleNext()}>
-                                        {value}
-                                    </button>
-                                </li>
-                            );
-                        }
-
+            <ul className="pagination mt-2">
+                {pageButtons.map((value, index) => {
+                    if (value === PREV) {
                         return (
-                            <li key={index} className={`page-item ${pagination.index === value && 'active'}`}>
-                                <button className="page-link" onClick={() => handlePagination(value)}>
-                                    {value + 1}
+                            <li key={index} className="page-item">
+                                <button className="page-link" onClick={() => handlePrevious()}>
+                                    {value}
                                 </button>
                             </li>
                         );
-                    })}
-                </ul>
-            </div>
+                    }
+
+                    if (value === NEXT) {
+                        return (
+                            <li key={index} className="page-item">
+                                <button className="page-link" onClick={() => handleNext()}>
+                                    {value}
+                                </button>
+                            </li>
+                        );
+                    }
+
+                    return (
+                        <li key={index} className={`page-item ${pagination.index === value && 'active'}`}>
+                            <button className="page-link" onClick={() => handlePagination(value)}>
+                                {value + 1}
+                            </button>
+                        </li>
+                    );
+                })}
+            </ul>
         </div>
     );
 };

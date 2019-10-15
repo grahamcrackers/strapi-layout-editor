@@ -25,6 +25,7 @@ export const ContentTypeTableBody = ({ layouts, items }: Props) => {
             rows.push(newObj);
         });
 
+        console.log(rows);
         return rows;
     };
 
@@ -36,22 +37,26 @@ export const ContentTypeTableBody = ({ layouts, items }: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [layouts, items]);
 
+    /* these fields don't just display text, this is rough and dirty for now */
+    const specialSnowflakes = ['id', 'previewImage'];
+
     return (
         <tbody className="align-baseline">
             {rows &&
                 rows.map(row => (
                     <tr key={row.id}>
                         {layouts.list.map((attribute, index) => {
+                            console.log(attribute);
                             return (
                                 <td
                                     key={index}
                                     className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-pre"
                                 >
-                                    {attribute === 'id' ? (
+                                    {attribute === 'id' && (
                                         <Link to={`${location.pathname}/${row[attribute]}`}>{row[attribute]}</Link>
-                                    ) : (
-                                        row[attribute]
                                     )}
+                                    {attribute === 'previewImage' && <div>TODO: Display Image</div>}
+                                    {!specialSnowflakes.includes(attribute) && row[attribute]}
                                 </td>
                             );
                         })}
