@@ -3,7 +3,6 @@ import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
 import { ContentTypeItems } from '../../pages/content-types-items.page';
 import { ExperienceEditor } from '../../components/experience-editor';
-import { RelationsToggle } from '../../components/experience-editor/relations-toggle';
 import { GridPreview } from 'components/grid-preview';
 
 export const Dashboard = () => {
