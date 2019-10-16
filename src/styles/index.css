@@ -13,4 +13,20 @@
     @apply bg-blue-700;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    background-color: #3e2723;
+    padding: 10px;
+}
+
+.grid-item {
+    background-color: #80cbc4;
+    border: 1px solid #fff;
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+}
+
 @tailwind utilities;

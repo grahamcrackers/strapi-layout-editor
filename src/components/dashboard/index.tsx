@@ -3,6 +3,8 @@ import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
 import { ContentTypeItems } from '../../pages/content-types-items.page';
 import { ExperienceEditor } from '../../components/experience-editor';
+import { RelationsToggle } from '../../components/experience-editor/relations-toggle';
+import { GridPreview } from 'components/grid-preview';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
@@ -40,6 +42,7 @@ export const Dashboard = () => {
             <Switch>
                 <Route exact={true} path="/dashboard/:contentType" component={ContentTypeItems} />
                 <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
+                <Route exact={true} path="/dashboard/:contentType/:itemId/grid-preview" component={GridPreview} />
             </Switch>
         </div>
     );
