@@ -73,8 +73,8 @@ export const useContentData = (contentType, itemId) => {
                     setLayouts(gridLayouts);
                 }
 
-                const contentData = await buildContentData(contentModel, content);
-                setContentData(contentData);
+                const newContentData = await buildContentData(contentModel, content);
+                setContentData(newContentData);
             }
         };
         massageData();
@@ -191,5 +191,6 @@ export const useContentData = (contentType, itemId) => {
         data: contentData,
         layout: layouts,
         setLayout: setLayouts,
+        existingLayoutId: existingLayouts ? existingLayouts.id : '',
     };
 };
