@@ -7,6 +7,7 @@ import axios from 'axios';
 import { config } from '../config/config';
 import qs from 'qs';
 import { StrapiGetParams } from '../interfaces/strapi/strapi.interface';
+import ReactPaginate from 'react-paginate';
 
 interface Pagination<T = []> {
     index: number;
@@ -134,37 +135,22 @@ export const ContentTypeItems = () => {
                 <ContentTypeTableBody layouts={schema.layouts} items={pagination.data} />
             </Table>
 
-            <ul className="pagination mt-2">
-                {pageButtons.map((value, index) => {
-                    if (value === PREV) {
-                        return (
-                            <li key={index} className="page-item">
-                                <button className="page-link" onClick={() => handlePrevious()}>
-                                    {value}
-                                </button>
-                            </li>
-                        );
-                    }
-
-                    if (value === NEXT) {
-                        return (
-                            <li key={index} className="page-item">
-                                <button className="page-link" onClick={() => handleNext()}>
-                                    {value}
-                                </button>
-                            </li>
-                        );
-                    }
-
-                    return (
-                        <li key={index} className={`page-item ${pagination.index === value && 'active'}`}>
-                            <button className="page-link" onClick={() => handlePagination(value)}>
-                                {value + 1}
-                            </button>
-                        </li>
-                    );
-                })}
-            </ul>
+            <ReactPaginate
+                pageCount={totalPages(pagination.count, pagination.size)}
+                pageRangeDisplayed={5}
+                marginPagesDisplayed={1}
+                onPageChange={({ selected }) => handlePagination(selected)}
+                containerClassName="pagination mt-4"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakClassName="page-item disabled"
+                breakLinkClassName="page-link"
+                activeClassName="active"
+            />
         </div>
     );
 };

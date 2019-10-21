@@ -1,14 +1,46 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ModelContext } from '../../contexts/ModelContext';
+import { Link, useLocation } from 'react-router-dom';
 // import { Layouts } from 'components/content-type-table/interfaces';
 
 export const ModelTable = () => {
-    const { metadata } = useContext(ModelContext);
+    const location = useLocation();
+    const { metadata, items } = useContext(ModelContext);
+    const [rows, setRows] = useState<any[]>([]);
 
     const headers = Object.entries(metadata.metadatas).filter(key => {
         return metadata.layouts.list.includes(key[0]);
     });
 
+    const getRowsData = (items: any) => {
+        const rows: any[] = [];
+        // get data from object of object
+        Object.keys(items).forEach(item => {
+            const row = items[item];
+            const newObj = {};
+            for (const property in row) {
+                if (metadata.layouts.list.includes(property)) {
+                    newObj[`${property}`] = row[property];
+                }
+            }
+            rows.push(newObj);
+        });
+
+        console.log(rows);
+        return rows;
+    };
+
+    useEffect(() => {
+        if (items) {
+            const bodyData = getRowsData(items);
+            setRows(bodyData);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [metadata.layouts, items]);
+
+    /* these fields don't just display text, this is rough and dirty for now */
+    const specialSnowflakes = ['id', 'previewImage'];
+    console.log(items);
     return (
         <table className="w-full text-left table-collapse border">
             <thead>
@@ -22,6 +54,28 @@ export const ModelTable = () => {
                     })}
                 </tr>
             </thead>
+            <tbody className="align-baseline">
+                {rows &&
+                    rows.map(row => (
+                        <tr key={row.id}>
+                            {metadata.layouts.list.map((attribute, index) => {
+                                console.log(attribute);
+                                return (
+                                    <td
+                                        key={index}
+                                        className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-pre"
+                                    >
+                                        {attribute === 'id' && (
+                                            <Link to={`${location.pathname}/${row[attribute]}`}>{row[attribute]}</Link>
+                                        )}
+                                        {attribute === 'previewImage' && <div>TODO: Display Image</div>}
+                                        {!specialSnowflakes.includes(attribute) && row[attribute]}
+                                    </td>
+                                );
+                            })}
+                        </tr>
+                    ))}
+            </tbody>
         </table>
     );
 };
