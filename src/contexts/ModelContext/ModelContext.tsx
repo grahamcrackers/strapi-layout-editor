@@ -1,4 +1,4 @@
-import React, { createContext, useState, useCallback } from 'react';
+import React, { createContext, useState } from 'react';
 import { ModelMetadata } from '.';
 
 interface ModelContextProps {
@@ -24,7 +24,7 @@ export const Context = createContext<ModelContextProps>(initialContext);
 export const Provider = ({ children, ...props }) => {
     const [metadata, setMetadata] = useState(initialContext.metadata);
     const [count, setCount] = useState(initialContext.count);
-    const [items, setItems] = useState();
+    const [items, setItems] = useState([]);
 
     const modelContext = {
         metadata,

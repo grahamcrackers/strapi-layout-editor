@@ -1,15 +1,50 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useContext, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
+import { getModelItems } from 'services/strapi.service';
+import { useParams } from 'react-router-dom';
+import { ModelContext } from 'contexts/ModelContext';
 
-interface ModelTablePaginationProps {
-    totalPages: number;
-    handlePagination: (selected) => {};
+interface Pagination<T = []> {
+    index: number;
+    size: number;
+    count: number;
+    total: number;
+    // data: T;
 }
 
-export const ModelTablePagination: FC<ModelTablePaginationProps> = ({ totalPages, handlePagination }) => {
+const initialPaginate: Pagination = {
+    index: 0,
+    size: 10,
+    count: 0,
+    total: 0,
+    // data: [],
+};
+
+const totalPages = (count: number, size: number) => {
+    return Math.ceil(count / size);
+};
+
+export const ModelTablePagination: FC<{}> = () => {
+    const { contentType } = useParams<{ contentType: string }>();
+    const { count, setItems } = useContext(ModelContext);
+    const [pagination, setPagination] = useState<Pagination>(initialPaginate);
+
+    useEffect(() => {
+        setPagination({ ...initialPaginate, count });
+    }, [count]);
+
+    const handlePagination = async (index: number) => {
+        const sort = 'id:ASC';
+        const { size } = pagination;
+
+        const { data } = await getModelItems(contentType, { limit: size, sort, start: +index * size });
+        setPagination({ ...pagination, index });
+        setItems(data);
+    };
+
     return (
         <ReactPaginate
-            pageCount={totalPages}
+            pageCount={totalPages(pagination.count, pagination.size)}
             pageRangeDisplayed={5}
             marginPagesDisplayed={1}
             onPageChange={({ selected }) => handlePagination(selected)}
