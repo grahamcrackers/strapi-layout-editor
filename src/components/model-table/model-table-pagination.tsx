@@ -34,10 +34,9 @@ export const ModelTablePagination: FC<{}> = () => {
     }, [count]);
 
     const handlePagination = async (index: number) => {
-        const sort = 'id:ASC';
         const { size } = pagination;
 
-        const { data } = await getModelItems(contentType, { limit: size, sort, start: +index * size });
+        const { data } = await getModelItems(contentType, { start: +index * size });
         setPagination({ ...pagination, index });
         setItems(data);
     };
