@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
-import { ContentTypeItems } from '../../pages/content-types-items.page';
 import { ExperienceEditor } from '../../components/experience-editor';
 import { GridPreview } from 'components/grid-preview';
+import { ModelPage } from 'pages/model.page';
+import { ModelProvider } from 'contexts/ModelContext';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
@@ -37,12 +38,13 @@ export const Dashboard = () => {
                     })}
                 </ul>
             </aside>
-
-            <Switch>
-                <Route exact={true} path="/dashboard/:contentType" component={ContentTypeItems} />
-                <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
-                <Route exact={true} path="/dashboard/:contentType/:itemId/grid-preview" component={GridPreview} />
-            </Switch>
+            <ModelProvider>
+                <Switch>
+                    <Route exact={true} path="/dashboard/:contentType" component={ModelPage} />
+                    <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
+                    <Route exact={true} path="/dashboard/:contentType/:itemId/grid-preview" component={GridPreview} />
+                </Switch>
+            </ModelProvider>
         </div>
     );
 };
