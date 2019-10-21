@@ -6,3 +6,13 @@ export const get = async (uri: string) => {
 
     return result.data;
 };
+
+export const getModelMetadata = async (model: string) => {
+    const url = `${config.strapi.endpoint}/content-manager/content-types/${model}`;
+    return await axios.get(url);
+};
+
+export const getModelCount = async (model: string) => {
+    const url = `${config.strapi.endpoint}/content-manager/explorer/${model}/count`;
+    return await axios.get(url);
+};
