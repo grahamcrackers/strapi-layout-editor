@@ -12,6 +12,7 @@ export const ModelTable = () => {
         return metadata.layouts.list.includes(key[0]);
     });
 
+    /////// UUUUUUUUGH TODO: CLEAN THIS UP
     const getRowsData = (items: any) => {
         const rows: any[] = [];
         // get data from object of object
@@ -26,7 +27,6 @@ export const ModelTable = () => {
             rows.push(newObj);
         });
 
-        console.log(rows);
         return rows;
     };
 
@@ -40,7 +40,7 @@ export const ModelTable = () => {
 
     /* these fields don't just display text, this is rough and dirty for now */
     const specialSnowflakes = ['id', 'previewImage'];
-    console.log(items);
+
     return (
         <table className="w-full text-left table-collapse border">
             <thead>
@@ -59,7 +59,6 @@ export const ModelTable = () => {
                     rows.map(row => (
                         <tr key={row.id}>
                             {metadata.layouts.list.map((attribute, index) => {
-                                console.log(attribute);
                                 return (
                                     <td
                                         key={index}
