@@ -4,6 +4,7 @@ import { getModelCount, getModelItems, getModelMetadata } from 'services/strapi.
 import { ModelTable } from '../components/model-table/model-table';
 import { ModelTablePagination } from '../components/model-table/model-table-pagination';
 import { ModelContext } from '../contexts/ModelContext';
+import { ModelSearch } from 'components/model-table/model-search';
 
 export const useModel = (contentType: string) => {
     const modelContext = useContext(ModelContext);
@@ -20,10 +21,7 @@ export const useModel = (contentType: string) => {
             const modelCount = await getModelCount(contentType);
             setCount(modelCount.data.count);
 
-            const modelItems = await getModelItems(contentType, {
-                limit: 10,
-                start: 0,
-            });
+            const modelItems = await getModelItems(contentType);
             setItems(modelItems.data);
         };
         initialize();
@@ -47,9 +45,11 @@ export const ModelPage: FC<{}> = () => {
         <div className="p-4 pl-0">
             <h1 className="mb-1 leading-none text-color-900 text-4xl font-light capitalize">{contentType}</h1>
             <p className="mt-0 mb-4 text-gray-600">{count} entries found</p>
+            <ModelSearch />
             {count > 0 && (
                 <>
                     <hr className="my-8 border-b-2 border-gray-200" />
+
                     <ModelTable />
                     <ModelTablePagination />
                 </>

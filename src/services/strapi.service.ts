@@ -30,9 +30,11 @@ export const getModelCount = async (model: string) => {
     return await axios.get(url);
 };
 
+/** default params { start: 0, limit: 10 } */
 export const getModelItems = async (model: string, params: StrapiGetParams = {}) => {
+    const initialParams = { start: 0, limit: 10, sort: 'id:ASC' };
     const url = `${config.strapi.endpoint}/content-manager/explorer/${model}`;
-    const encoded = getParams(params);
+    const encoded = getParams({ ...initialParams, ...params });
 
     return axios.get(`${url}${encoded}`);
 };

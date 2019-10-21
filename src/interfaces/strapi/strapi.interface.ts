@@ -121,6 +121,9 @@ export interface StrapiGetParams {
     /* Get records that contains (case sensitive) a value */
     containss?: string;
 
+    /* search for anything */
+    q?: string;
+
     /* Get records that matches any value in the array of values */
     in?: any[];
 
