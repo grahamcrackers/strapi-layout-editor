@@ -1,14 +1,15 @@
 import React, { createContext, useState, useCallback } from 'react';
+import { ModelMetadata } from '.';
 
 interface ModelContextProps {
-    metadata: any;
-    setMetadata: React.Dispatch<any>;
-    count: any;
-    setCount: React.Dispatch<any>;
+    metadata: ModelMetadata;
+    setMetadata: React.Dispatch<ModelMetadata>;
+    count: number;
+    setCount: React.Dispatch<number>;
 }
 
 const initialContext = {
-    metadata: {},
+    metadata: {} as ModelMetadata,
     setMetadata: () => {},
     count: 0,
     setCount: () => {},
