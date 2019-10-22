@@ -128,7 +128,6 @@ export const useContentData = (contentType, itemId) => {
             }
         }
 
-        console.log(gridLayouts);
         return gridLayouts;
     };
 

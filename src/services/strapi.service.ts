@@ -2,6 +2,7 @@ import axios from 'axios';
 import { StrapiGetParams } from 'interfaces/strapi/strapi.interface';
 import qs from 'qs';
 import { config } from '../config/config';
+import { Layout } from 'react-grid-layout';
 
 export const get = async (uri: string) => {
     const result = await axios.get(`${config.strapi.endpoint}/${uri}`);
@@ -42,4 +43,19 @@ export const getModelItems = async (model: string, params: StrapiGetParams = {})
 export const getModelItem = async (model, id) => {
     const url = `${config.strapi.endpoint}/content-manager/explorer/${model}/${id}`;
     return await axios.get(url);
+};
+
+export const getModelLayouts = async (model: string, id: string) => {
+    const url = `${config.strapi.endpoint}/layout-editor/${model}/${id}/layouts?source=layout-editor`;
+    return await axios.get(url);
+};
+
+export const postModelLayouts = async (modelType: string, modelId: string, layoutJson: Layout[], layoutId = '') => {
+    if (layoutId) {
+        const url = `${config.strapi.endpoint}/content-manager/explorer/modellayout/${layoutId}?source=layout-editor`;
+        return await axios.put(url, { modelType, modelId, layoutJson });
+    }
+
+    const url = `${config.strapi.endpoint}/content-manager/explorer/modellayout?source=layout-editor`;
+    return await axios.post(url, { modelType, modelId, layoutJson });
 };

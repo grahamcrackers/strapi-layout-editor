@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 
-export const RelationsToggle = () => {
+interface RelationsToggleProps {
+    className: string;
+    attributes: string[];
+    relations: string[];
+}
+
+export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props }) => {
     return (
-        <div className="block">
+        <div className={className}>
             <span className="text-gray-700">Checkboxes</span>
             <div className="mt-2">
                 <div>
