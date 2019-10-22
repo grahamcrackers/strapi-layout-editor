@@ -1,7 +1,7 @@
 import React from 'react';
 import { Redirect, useLocation } from 'react-router-dom';
 import { Page } from '../../common/ui/page';
-import { LoginForm } from '../login-form/login-form';
+import { LoginForm } from './login-form';
 import { useAuthentication } from '../../common/hooks/useAuthentication';
 
 interface LoginPageState {
