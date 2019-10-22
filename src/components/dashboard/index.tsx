@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import { ExperienceEditor } from '../../components/experience-editor';
 import { GridPreview } from 'components/grid-preview';
-import { ModelPage } from 'pages/model.page';
+import { ModelPage } from 'components/pages/model.page';
 import { ModelProvider } from 'components/model/context';
 import { getModels } from 'services/strapi.service';
 import { ModelItemProvider } from 'components/model-item/context';

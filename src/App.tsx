@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import { PrivateRoute } from './common/private-route';
 import { Dashboard } from './components/dashboard';
-import { LoginPage } from './pages/login.page';
+import { LoginPage } from './components/pages/login.page';
 import { NavBar } from './components/nav-bar';
 import { transitions, positions, Provider as AlertProvider } from 'react-alert';
 import AlertTemplate from 'react-alert-template-basic';
