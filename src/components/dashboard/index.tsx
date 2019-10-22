@@ -5,6 +5,8 @@ import { ExperienceEditor } from '../../components/experience-editor';
 import { GridPreview } from 'components/grid-preview';
 import { ModelPage } from 'pages/model.page';
 import { ModelProvider } from 'contexts/ModelContext';
+import { ModelLayout } from 'components/model-item/model-layout';
+import { ModelItemProvider } from 'components/model-item/context';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
@@ -39,11 +41,17 @@ export const Dashboard = () => {
                 </ul>
             </aside>
             <ModelProvider>
-                <Switch>
-                    <Route exact={true} path="/dashboard/:contentType" component={ModelPage} />
-                    <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
-                    <Route exact={true} path="/dashboard/:contentType/:itemId/grid-preview" component={GridPreview} />
-                </Switch>
+                <ModelItemProvider>
+                    <Switch>
+                        <Route exact={true} path="/dashboard/:contentType" component={ModelPage} />
+                        <Route exact={true} path="/dashboard/:contentType/:itemId" component={ModelLayout} />
+                        <Route
+                            exact={true}
+                            path="/dashboard/:contentType/:itemId/grid-preview"
+                            component={GridPreview}
+                        />
+                    </Switch>
+                </ModelItemProvider>
             </ModelProvider>
         </div>
     );

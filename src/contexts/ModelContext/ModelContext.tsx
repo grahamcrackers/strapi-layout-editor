@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { ModelMetadata } from '.';
+import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
 
 interface ModelContextProps {
     metadata: ModelMetadata;
