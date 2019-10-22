@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Header } from '../../ui/header';
+import { Header } from '../../common/ui/header';
 
 import ServiceMasterLogo from 'assets/img/stamp.svm.svg';
 import plus from 'assets/icons/plus.svg';

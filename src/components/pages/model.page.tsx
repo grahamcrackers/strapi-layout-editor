@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState, FC } from 'react';
 import { useParams } from 'react-router';
 import { getModelCount, getModelItems, getModelMetadata } from 'services/strapi.service';
-import { ModelTable } from '../components/model/model-table';
-import { ModelTablePagination } from '../components/model/model-table-pagination';
-import { ModelContext } from '../components/model/context';
+import { ModelTable } from '../model/model-table';
+import { ModelTablePagination } from '../model/model-table-pagination';
+import { ModelContext } from '../model/context';
 import { ModelSearch } from 'components/model/model-search';
 
 export const useModel = (contentType: string) => {

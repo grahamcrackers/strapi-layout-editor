@@ -3,7 +3,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { useAlert } from 'react-alert';
 import RGL, { WidthProvider } from 'react-grid-layout';
 import { useParams } from 'react-router-dom';
-import { Page } from '../../ui/page';
+import { Page } from '../../common/ui/page';
 import './index.css';
 import { RelationsToggle } from './relations-toggle';
 import { ContentData, useContentData, EditLayoutWithPos } from './useContentData';
