@@ -44,24 +44,24 @@ export const useContentData = (contentType, itemId) => {
 
     const [existingLayouts, setExistingLayouts] = useState<ModelLayout>();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { data } = await get(`content-manager/content-types/${contentType}`);
-            setContentModel(data);
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const { data } = await get(`content-manager/content-types/${contentType}`);
+    //         setContentModel(data);
 
-            const result = await get(`content-manager/explorer/${contentType}/${itemId}`);
-            setContent(result);
+    //         const result = await get(`content-manager/explorer/${contentType}/${itemId}`);
+    //         setContent(result);
 
-            // check to see if we already have any layouts
-            const existingLayouts: ModelLayout = await get(
-                `layout-editor/${contentType}/${itemId}/layouts?source=layout-editor`,
-            );
+    //         // check to see if we already have any layouts
+    //         const existingLayouts: ModelLayout = await get(
+    //             `layout-editor/${contentType}/${itemId}/layouts?source=layout-editor`,
+    //         );
 
-            setExistingLayouts(existingLayouts);
-        };
-        fetchData();
-        // only get data on component mount
-    }, []);
+    //         setExistingLayouts(existingLayouts);
+    //     };
+    //     fetchData();
+    //     // only get data on component mount
+    // }, []);
 
     // since we are using useState to store our api data, we want to update
     // contentData and layouts once when an update is triggered, which should only be once

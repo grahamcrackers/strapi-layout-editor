@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
 import { Layout } from 'react-grid-layout';
 
@@ -11,22 +11,22 @@ interface ModelItemContextProps {
     setLayouts: React.Dispatch<any>;
 }
 
-const initialContext = {
+export const Context = createContext<ModelItemContextProps>({
     metadata: {} as ModelMetadata,
     setMetadata: () => {},
     item: {},
     setItem: () => {},
     layouts: [],
     setLayouts: () => {},
-};
+});
 
-export const Context = createContext<ModelItemContextProps>(initialContext);
+export const Provider = ({ children }) => {
+    // set up state for data we want to keep track of
+    const [metadata, setMetadata] = useState({} as ModelMetadata);
+    const [item, setItem] = useState({});
+    const [layouts, setLayouts] = useState<Layout[]>([]);
 
-export const Provider = ({ children, ...props }) => {
-    const [metadata, setMetadata] = useState(initialContext.metadata);
-    const [item, setItem] = useState(initialContext.item);
-    const [layouts, setLayouts] = useState<Layout[]>(initialContext.layouts);
-
+    console.log(metadata);
     const modelItemContext = {
         metadata,
         setMetadata,
@@ -39,4 +39,11 @@ export const Provider = ({ children, ...props }) => {
     return <Context.Provider value={modelItemContext}>{children}</Context.Provider>;
 };
 
-export const { Consumer } = Context;
+export const useModelItem = () => {
+    const context = React.useContext(Context);
+    console.log(context);
+    if (context === undefined) {
+        throw new Error('useModelItem must be used within a ModelItemProvider');
+    }
+    return context;
+};
