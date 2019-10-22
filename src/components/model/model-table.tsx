@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ModelContext } from '../../contexts/ModelContext';
+import { ModelContext } from './context';
 import { Link, useLocation } from 'react-router-dom';
 
 export const ModelTable = () => {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { ModelContext } from 'contexts/ModelContext';
+import { ModelContext } from 'components/model/context';
 import { getModelItems } from 'services/strapi.service';
 import { useDebounce } from '../../common/hooks/useDebounce';
 

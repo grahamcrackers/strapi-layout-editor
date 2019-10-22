@@ -2,7 +2,7 @@ import React, { FC, useState, useContext, useEffect } from 'react';
 import ReactPaginate from 'react-paginate';
 import { getModelItems } from 'services/strapi.service';
 import { useParams } from 'react-router-dom';
-import { ModelContext } from 'contexts/ModelContext';
+import { ModelContext } from 'components/model/context';
 
 interface Pagination<T = []> {
     index: number;
