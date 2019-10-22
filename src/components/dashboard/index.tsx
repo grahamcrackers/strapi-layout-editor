@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import * as strapiService from '../../services/strapi.service';
 import { Link, Route, Switch } from 'react-router-dom';
 import { ExperienceEditor } from '../../components/experience-editor';
 import { GridPreview } from 'components/grid-preview';
 import { ModelPage } from 'pages/model.page';
 import { ModelProvider } from 'contexts/ModelContext';
+import { getModels } from 'services/strapi.service';
 import { ModelItemProvider } from 'components/model-item/context';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);
 
-    const getContentTypes = async () => {
-        const types = await strapiService.get('content-manager/content-types');
-        setContentTypes(types.data);
-    };
-
     useEffect(() => {
         const initialize = async () => {
-            await getContentTypes();
+            const models = await getModels();
+            setContentTypes(models.data.data);
         };
         initialize();
     }, []);
+
+    if (!contentTypes) {
+        return null;
+    }
 
     return (
         <div className="flex">

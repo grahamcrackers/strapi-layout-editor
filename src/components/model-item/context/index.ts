@@ -1,5 +1,1 @@
-export {
-    Context as ModelItemContext,
-    Provider as ModelItemProvider,
-    Consumer as ModelItemConsumer,
-} from './model-item.context';
+export { Context as ModelItemContext, Provider as ModelItemProvider } from './model-item.context';

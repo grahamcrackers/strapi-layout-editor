@@ -21,6 +21,11 @@ const getParams = (params: StrapiGetParams) => {
     return qs.stringify(prepend, { addQueryPrefix: true });
 };
 
+export const getModels = async () => {
+    const url = `${config.strapi.endpoint}/content-manager/content-types`;
+    return await axios.get(url);
+};
+
 export const getModelMetadata = async (model: string) => {
     const url = `${config.strapi.endpoint}/content-manager/content-types/${model}`;
     return await axios.get(url);
