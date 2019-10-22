@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import { get } from '../../services/strapi.service';
 import { Layout } from 'react-grid-layout';
 import { EditLayouts } from 'interfaces/strapi/model-layouts.interface';
 import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';

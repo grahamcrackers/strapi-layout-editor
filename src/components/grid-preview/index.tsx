@@ -1,31 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { get } from 'services/strapi.service';
 import { Layout } from 'react-grid-layout';
+import { useModelItem } from 'components/model-item/context/model-item.context';
 
 export const GridPreview = () => {
     const { contentType, itemId } = useParams();
-    const [data, setData] = useState({});
-    const [layouts, setLayouts] = useState<Layout[]>([]);
+    const { item, layouts } = useModelItem();
+    // const [layouts, setLayouts] = useState<Layout[]>([]);
     const [fields, setFields] = useState<string[]>([]);
 
     useEffect(() => {
-        const getData = async () => {
-            const result = await get(`content-manager/explorer/${contentType}/${itemId}`);
-            setData(result);
-
-            const { layoutJson } = await get(`layout-editor/${contentType}/${itemId}/layouts?source=layout-editor`);
-            setLayouts(layoutJson);
-            setFields(
-                Object.keys(layoutJson).map(l => {
-                    const name = layoutJson[l].i;
-                    // if (name === 'isPost' || name === 'title') return name;
-                    return name;
-                }),
-            );
-        };
-        getData();
-
+        // const { layoutJson } = layouts;
+        // setFields(
+        //     Object.keys(layoutJson).map(l => {
+        //         const name = layoutJson[l].i;
+        //         // if (name === 'isPost' || name === 'title') return name;
+        //         return name;
+        //     }),
+        // );
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -33,8 +25,8 @@ export const GridPreview = () => {
         <div className="p-4 pl-0 w-full">
             <h1>Grid Preview</h1>
             <div className="grid">
-                {data &&
-                    Object.keys(data)
+                {item &&
+                    Object.keys(item)
                         .filter(d => fields.includes(d))
                         // .filter(d => d === 'isPost' || d === 'title')
                         .map(key => {
@@ -53,17 +45,6 @@ export const GridPreview = () => {
                                 </div>
                             );
                         })}
-                {/* {data.map(d => {
-                    return <div></div>
-                })}
-                <div className="grid-item">1</div>
-                <div className="grid-item">2</div>
-                <div className="grid-item">3</div>
-                <div className="grid-item">4</div>
-                <div className="grid-item">5</div>
-                <div className="grid-item">6</div>
-                <div className="grid-item">7</div>
-                <div className="grid-item">8</div> */}
             </div>
         </div>
     );
