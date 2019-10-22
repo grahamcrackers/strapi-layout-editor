@@ -36,5 +36,10 @@ export const getModelItems = async (model: string, params: StrapiGetParams = {})
     const url = `${config.strapi.endpoint}/content-manager/explorer/${model}`;
     const encoded = getParams({ ...initialParams, ...params });
 
-    return axios.get(`${url}${encoded}`);
+    return await axios.get(`${url}${encoded}`);
+};
+
+export const getModelItem = async (model, id) => {
+    const url = `${config.strapi.endpoint}/content-manager/explorer/${model}/${id}`;
+    return await axios.get(url);
 };

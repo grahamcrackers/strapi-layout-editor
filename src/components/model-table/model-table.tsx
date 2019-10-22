@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ModelContext } from '../../contexts/ModelContext';
 import { Link, useLocation } from 'react-router-dom';
-// import { Layouts } from 'components/content-type-table/interfaces';
 
 export const ModelTable = () => {
     const location = useLocation();

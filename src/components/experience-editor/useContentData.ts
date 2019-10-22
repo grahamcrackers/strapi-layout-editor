@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import { AttributeProps, EditLayout, MetaDataViews, Model } from '../../interfaces/strapi/strapi.interface';
 import { get } from '../../services/strapi.service';
 import { Layout } from 'react-grid-layout';
+import { EditLayouts } from 'interfaces/strapi/model-layouts.interface';
+import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
+import { AttributeProps } from 'interfaces/strapi/model-schema.interface';
+import { MetaDataViews } from 'interfaces/strapi/attribute-metadatas.interface';
 
 export interface ModelLayout {
     id: string;
@@ -13,7 +16,7 @@ export interface ModelLayout {
 
 export interface ContentDataLayouts {
     list: boolean;
-    edit: false | Omit<EditLayout, 'name'>;
+    edit: false | Omit<EditLayouts, 'name'>;
     editRelations: boolean;
     grid: false | Layout;
 }
@@ -26,14 +29,14 @@ export interface ContentData {
     layouts: ContentDataLayouts;
 }
 
-export interface EditLayoutWithPos extends EditLayout {
+export interface EditLayoutWithPos extends EditLayouts {
     x: number;
     y: number;
 }
 
 export const useContentData = (contentType, itemId) => {
     const ignoreProps: string[] = ['id', 'createdAt', 'updatedAt'];
-    const [contentModel, setContentModel] = useState<Model>({} as Model);
+    const [contentModel, setContentModel] = useState<ModelMetadata>({} as ModelMetadata);
     const [content, setContent] = useState<any>({});
 
     const [contentData, setContentData] = useState<ContentData[]>([]);
@@ -103,7 +106,7 @@ export const useContentData = (contentType, itemId) => {
      * Does the same thing as flattenEditLayouts() but will also provide the width and height for
      * react-grid-layout based on a 12 row grid
      */
-    const calculateGridLayouts = async (editLayouts: EditLayout[][], cols = 12): Promise<Layout[]> => {
+    const calculateGridLayouts = async (editLayouts: EditLayouts[][], cols = 12): Promise<Layout[]> => {
         const gridLayouts: Layout[] = [];
 
         for (const yPos in editLayouts) {
@@ -129,8 +132,8 @@ export const useContentData = (contentType, itemId) => {
         return gridLayouts;
     };
 
-    const getEditLayout = (property: string): false | Omit<EditLayout, 'name'> => {
-        let layout: false | Omit<EditLayout, 'name'> = false;
+    const getEditLayout = (property: string): false | Omit<EditLayouts, 'name'> => {
+        let layout: false | Omit<EditLayouts, 'name'> = false;
 
         const editLayouts = flattenEditLayouts();
         for (const k of editLayouts) {
