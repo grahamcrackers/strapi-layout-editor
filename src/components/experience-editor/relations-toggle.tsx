@@ -13,11 +13,10 @@ const FilterCheckbox = ({ ...props }) => {
 
 export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props }) => {
     // get items from metadata
-    const { metadata } = useModelItem();
+    const { metadata, filters, setFilters } = useModelItem();
     const { edit, editRelations } = metadata.layouts;
     const attributes = edit.flat().map(x => x.name);
     const initial = [...attributes, ...editRelations];
-    const { filters, setFilters } = useItemLayouts();
 
     // add or remove item to the filter list
     const handleChange = e => {

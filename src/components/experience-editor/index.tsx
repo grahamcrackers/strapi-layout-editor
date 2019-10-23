@@ -55,7 +55,7 @@ export const ExperienceEditor = () => {
                     <p className="mt-0 mb-4 text-gray-600">{`${contentType}: ${itemId}`}</p>
                 </div>
                 <div className="ml-auto">
-                    <button className="btn btn-blue m-1" onClick={() => console.log()}>
+                    <button className="btn btn-blue m-1" onClick={() => console.log('saved!')}>
                         Save
                     </button>
                 </div>
