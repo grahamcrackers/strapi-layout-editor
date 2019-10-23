@@ -7,10 +7,10 @@ import { useItemLayouts } from 'components/model-item/use-item-layouts';
 const ReactGridLayout = WidthProvider(RGL);
 
 export const GridLayouts = () => {
-    const { metadata, layouts, setLayouts, item } = useModelItem();
-    const { editLayouts, filters } = useItemLayouts();
+    const { metadata, layouts, setLayouts, item, filters } = useModelItem();
+    const { editLayouts, gridLayouts } = useItemLayouts();
 
-    console.log(layouts);
+    console.log(filters);
     if (!layouts) {
         return <div>loading...</div>;
     }
@@ -25,13 +25,18 @@ export const GridLayouts = () => {
     return (
         <ReactGridLayout
             className="bg-gray-200"
-            layout={layouts}
-            onLayoutChange={layouts => {
-                setLayouts(layouts);
+            layout={gridLayouts}
+            onLayoutChange={changedLayouts => {
+                setLayouts(changedLayouts);
             }}
         >
-            {editLayouts.map((layout, index) => {
-                return <div key={index}>{JSON.stringify(layout)}</div>;
+            {gridLayouts.map((layout, index) => {
+                return (
+                    <div key={layout.i} className="rounded shadow bg-white">
+                        <span>{layout.i}</span>
+                        <div>{JSON.stringify(layout)}</div>
+                    </div>
+                );
             })}
         </ReactGridLayout>
     );

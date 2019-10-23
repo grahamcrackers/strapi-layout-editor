@@ -40,13 +40,7 @@ export interface EditLayoutWithPos extends EditLayouts {
 }
 
 export const useItemLayouts = () => {
-    const { metadata } = useModelItem();
-    const [filters, setFilters] = useState<string[]>([]);
-    // since we are using useState to store our api data, we want to update
-    // contentData and layouts once when an update is triggered, which should only be once
-    useEffect(() => {
-        console.log(filters);
-    }, [filters]);
+    const { metadata, filters, setFilters } = useModelItem();
 
     /**
      * Flatten the edit layout matrix but preserve the x, y positions in the array matrix
@@ -71,7 +65,7 @@ export const useItemLayouts = () => {
      * Does the same thing as flattenEditLayouts() but will also provide the width and height for
      * react-grid-layout based on a 12 row grid
      */
-    const calculateGridLayouts = async (cols = 12): Promise<Layout[]> => {
+    const calculateGridLayouts = (cols = 12): Layout[] => {
         const gridLayouts: Layout[] = [];
 
         if (metadata.layouts.edit) {
@@ -96,69 +90,14 @@ export const useItemLayouts = () => {
             }
         }
 
-        return gridLayouts;
+        return gridLayouts.filter(layout => layout.i && !filters.includes(layout.i));
     };
-
-    // const getEditLayout = (property: string): false | Omit<EditLayouts, 'name'> => {
-    //     let layout: false | Omit<EditLayouts, 'name'> = false;
-
-    //     const editLayouts = flattenEditLayouts();
-    //     for (const k of editLayouts) {
-    //         if (k.name === property) {
-    //             layout = { size: k.size };
-    //         }
-    //     }
-
-    //     return layout;
-    // };
-
-    // const getGridLayout = (property: string): false | Layout => {
-    //     let layout: false | Layout = false;
-
-    //     const gridLayouts = layouts;
-    //     for (const grid of gridLayouts) {
-    //         if (grid.i === property) {
-    //             layout = grid;
-    //         }
-    //     }
-
-    //     return layout;
-    // };
-
-    /**
-     * Creates a more easily consumable format so the react component can map
-     * over the content properties easier
-     */
-    // const buildContentData = async (contentModel, content): Promise<ContentData[]> => {
-    //     const data: ContentData[] = [];
-
-    //     if (contentModel.schema) {
-    //         const { schema, metadatas, layouts } = contentModel;
-    //         for (const property in schema.attributes) {
-    //             const contentData: ContentData = {
-    //                 key: property,
-    //                 value: content[property],
-    //                 attributes: schema.attributes[property],
-    //                 metadata: metadatas[property],
-    //                 layouts: {
-    //                     list: layouts.list.includes(property),
-    //                     edit: getEditLayout(property),
-    //                     editRelations: layouts.editRelations.includes(property),
-    //                     grid: getGridLayout(property),
-    //                 },
-    //             };
-    //             data.push(contentData);
-    //         }
-    //     }
-
-    //     return data.filter(d => !ignoreProps.includes(d.key));
-    // };
 
     return {
         // Expose metadata and original data just as a reference
-        editLayouts: flattenEditLayouts(),
-        // gridLayouts: calculateGridLayouts(),
         filters,
         setFilters,
+        editLayouts: flattenEditLayouts(),
+        gridLayouts: calculateGridLayouts(),
     };
 };
