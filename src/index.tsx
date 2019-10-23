@@ -3,9 +3,10 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import './styles/index.css';
 import { AuthDataProvider } from './common/hooks/useAuthentication';
 
+import './styles/index.css';
+import './styles/react-grid-layout.css';
 render(
     <AuthDataProvider>
         <App />

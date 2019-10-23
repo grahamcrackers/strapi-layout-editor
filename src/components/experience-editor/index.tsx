@@ -1,22 +1,23 @@
 /* eslint-disable array-callback-return */
-import React, { useEffect, useContext, useState } from 'react';
-import { useAlert } from 'react-alert';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import { useModelItem } from 'components/model-item/context/model-item.context';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { getModelItem, getModelLayouts, getModelMetadata } from 'services/strapi.service';
 import { Page } from '../../common/ui/page';
-import './index.css';
-import { RelationsToggle } from './relations-toggle';
-import { ContentData, useContentData, EditLayoutWithPos } from './useContentData';
-import { postModelLayouts, getModelMetadata, getModelItem, getModelLayouts } from 'services/strapi.service';
-import { ModelItemProvider, ModelItemContext } from 'components/model-item/context';
 import { GridLayouts } from './GridLayouts';
+import { RelationsToggle } from './relations-toggle';
+
+function isEmpty(obj) {
+    for (const x in obj) {
+        return false;
+    }
+    return true;
+}
 
 export const ExperienceEditor = () => {
-    // const alert = useAlert();
     const { contentType, itemId } = useParams<{ contentType: string; itemId: string }>();
     const [fetching, setFetching] = useState(true);
-    const modelItemContext = useContext(ModelItemContext);
-    const { setMetadata, setItem, setLayouts } = modelItemContext;
+    const { setMetadata, setItem, setLayouts } = useModelItem();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -28,7 +29,13 @@ export const ExperienceEditor = () => {
 
             // check to see if we already have any layouts
             const modelLayouts = await getModelLayouts(contentType, itemId);
-            setLayouts(modelLayouts.data);
+
+            // todo change pugin to return empty array, not object
+            if (!modelLayouts.data.length || isEmpty(modelLayouts.data)) {
+                setLayouts([]);
+            } else {
+                setLayouts(modelLayouts.data);
+            }
 
             setFetching(false);
         };
@@ -42,7 +49,20 @@ export const ExperienceEditor = () => {
 
     return (
         <Page className="flex w-full">
-            <GridLayouts />
+            <div className="flex-auto pt-4 pr-4">
+                <div>
+                    <h2 className="mb-1 leading-none text-color-900 text-3xl font-normal">Experience Editor</h2>
+                    <p className="mt-0 mb-4 text-gray-600">{`${contentType}: ${itemId}`}</p>
+                </div>
+                <div className="ml-auto">
+                    <button className="btn btn-blue m-1" onClick={() => console.log()}>
+                        Save
+                    </button>
+                </div>
+                <GridLayouts />
+            </div>
+
+            <RelationsToggle className="w-64" />
         </Page>
     );
 };

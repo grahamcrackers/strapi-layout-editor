@@ -26,7 +26,6 @@ export const Provider = ({ children }) => {
     const [item, setItem] = useState({});
     const [layouts, setLayouts] = useState<Layout[]>([]);
 
-    console.log(metadata);
     const modelItemContext = {
         metadata,
         setMetadata,
@@ -41,9 +40,10 @@ export const Provider = ({ children }) => {
 
 export const useModelItem = () => {
     const context = React.useContext(Context);
-    console.log(context);
+
     if (context === undefined) {
         throw new Error('useModelItem must be used within a ModelItemProvider');
     }
+
     return context;
 };
