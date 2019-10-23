@@ -15,13 +15,6 @@ export const GridLayouts = () => {
         return <div>loading...</div>;
     }
 
-    // return (
-    //     <ul>
-    //         {editLayouts.map((layout, index) => {
-    //             return <li key={index}>{JSON.stringify(layout)}</li>;
-    //         })}
-    //     </ul>
-    // );
     return (
         <ReactGridLayout
             className="bg-gray-200"

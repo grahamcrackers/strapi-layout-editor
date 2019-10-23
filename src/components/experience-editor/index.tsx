@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getModelItem, getModelLayouts, getModelMetadata } from 'services/strapi.service';
 import { Page } from '../../common/ui/page';
-import { GridLayouts } from './GridLayouts';
+import { GridLayouts } from './grid-layouts';
 import { RelationsToggle } from './relations-toggle';
 
 function isEmpty(obj) {
