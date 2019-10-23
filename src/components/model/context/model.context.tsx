@@ -28,7 +28,7 @@ export const Provider = ({ children, ...props }) => {
 
     const modelContext = {
         metadata,
-        setMetadata, //: updateMetadata,
+        setMetadata,
         count,
         setCount,
         items,
@@ -38,4 +38,11 @@ export const Provider = ({ children, ...props }) => {
     return <Context.Provider value={modelContext}>{children}</Context.Provider>;
 };
 
-export const { Consumer } = Context;
+export const useModel = () => {
+    const context = React.useContext(Context);
+
+    if (context === undefined) {
+        throw new Error('useModel must be used within a ModelProvider');
+    }
+    return context;
+};

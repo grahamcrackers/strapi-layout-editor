@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useState, FC } from 'react';
+import { ModelSearch } from 'components/model/model-search';
+import React, { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { getModelCount, getModelItems, getModelMetadata } from 'services/strapi.service';
+import { useModel } from './context/model.context';
 import { ModelTable } from './model-table';
 import { ModelTablePagination } from './model-table-pagination';
-import { ModelContext } from './context';
-import { ModelSearch } from 'components/model/model-search';
 
-export const useModel = (contentType: string) => {
-    const modelContext = useContext(ModelContext);
-    const { metadata, setMetadata, count, setCount, items, setItems } = modelContext;
+export const ModelPage: FC<{}> = () => {
+    const { contentType } = useParams<{ contentType: string }>();
+    const [fetching, setFetching] = useState(true);
+    const { setMetadata, count, setCount, setItems } = useModel();
 
     // get our models metadata, total count, and first 10 instances (if any);
     useEffect(() => {
@@ -23,21 +24,14 @@ export const useModel = (contentType: string) => {
 
             const modelItems = await getModelItems(contentType);
             setItems(modelItems.data);
+
+            setFetching(false);
         };
         initialize();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contentType]);
 
-    return {
-        ...modelContext,
-    };
-};
-
-export const ModelPage: FC<{}> = () => {
-    const { contentType } = useParams<{ contentType: string }>();
-    const { metadata, count } = useModel(contentType);
-
-    if (!metadata.uid && !count) {
+    if (fetching) {
         return <div>Loading...</div>;
     }
 

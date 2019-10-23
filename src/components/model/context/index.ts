@@ -1,1 +1,1 @@
-export { Context as ModelContext, Provider as ModelProvider, Consumer as ModelConsumer } from './model.context';
+export { Context as ModelContext, Provider as ModelProvider } from './model.context';
