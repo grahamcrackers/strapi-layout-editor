@@ -11,6 +11,8 @@ interface ModelItemContextProps {
     setLayouts: React.Dispatch<any>;
     filters: string[];
     setFilters: React.Dispatch<string[]>;
+    modelLayoutId: string;
+    setModelLayoutId: React.Dispatch<string>;
 }
 
 export const Context = createContext<ModelItemContextProps>({
@@ -22,6 +24,8 @@ export const Context = createContext<ModelItemContextProps>({
     setLayouts: () => {},
     filters: [],
     setFilters: () => {},
+    modelLayoutId: '',
+    setModelLayoutId: () => '',
 });
 
 export const Provider = ({ children }) => {
@@ -30,6 +34,7 @@ export const Provider = ({ children }) => {
     const [item, setItem] = useState({});
     const [layouts, setLayouts] = useState<Layout[]>([]);
     const [filters, setFilters] = useState<string[]>([]);
+    const [modelLayoutId, setModelLayoutId] = useState<string>('');
 
     const modelItemContext = {
         metadata,
@@ -40,6 +45,8 @@ export const Provider = ({ children }) => {
         setLayouts,
         filters,
         setFilters,
+        modelLayoutId,
+        setModelLayoutId,
     };
 
     return <Context.Provider value={modelItemContext}>{children}</Context.Provider>;

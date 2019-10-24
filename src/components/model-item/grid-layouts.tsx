@@ -7,14 +7,14 @@ import { JsonStringify } from 'common/json-stringify';
 const ReactGridLayout = WidthProvider(RGL);
 
 export const GridLayouts = () => {
-    const { metadata, layouts, setLayouts, filters } = useModelItem();
-    const { gridLayouts, relationalLayouts, relationalData, item } = useItemLayouts();
+    const { metadata, layouts, setLayouts } = useModelItem();
+    const { attributeLayouts, relationalLayouts, relationalData } = useItemLayouts();
 
     // relational data won't have the right y positions, but they
     // will change based on what is filtered
     const adjustRelationYPos = () => {
         let adjusted: Layout[] = [];
-        const yPostions: number[] = gridLayouts.map(x => x.y);
+        const yPostions: number[] = attributeLayouts.map(x => x.y);
         const adjPos = Math.max(...yPostions);
 
         for (const layout of relationalLayouts) {
@@ -31,13 +31,13 @@ export const GridLayouts = () => {
         <>
             <ReactGridLayout
                 className="bg-gray-200"
-                layout={[...gridLayouts, ...adjustRelationYPos()]}
+                layout={[...attributeLayouts, ...adjustRelationYPos()]}
                 onLayoutChange={changedLayouts => {
                     setLayouts(changedLayouts);
                 }}
             >
                 {/* Layout the metadata edit fields */}
-                {gridLayouts.map(({ i }) => {
+                {attributeLayouts.map(({ i }) => {
                     return (
                         <div key={i} className="rounded shadow bg-white">
                             <span>{i}</span>
