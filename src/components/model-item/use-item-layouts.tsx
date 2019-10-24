@@ -2,7 +2,7 @@
 import { EditLayouts } from 'interfaces/strapi/model-layouts.interface';
 import { Layout } from 'react-grid-layout';
 import { useModelItem } from './context/model-item.context';
-import { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 
 export interface EditLayoutWithPos extends EditLayouts {
     x: number;
@@ -23,7 +23,7 @@ export const useItemLayouts = () => {
      * Does the same thing as flattenEditLayouts() but will also provide the width and height for
      * react-grid-layout based on a 12 row grid
      */
-    const calculateGridLayouts = (cols = 12): Layout[] => {
+    const getAttributeLayouts = (cols = 12): Layout[] => {
         const layouts: Layout[] = [];
 
         if (metadata.layouts.edit) {
@@ -98,7 +98,7 @@ export const useItemLayouts = () => {
         filters,
         setFilters,
         // we only want to recalculate these if item or filters has changed
-        gridLayouts: useMemo(() => calculateGridLayouts(), [item, filters]),
+        attributeLayouts: useMemo(() => getAttributeLayouts(), [item, filters]),
         relationalLayouts: useMemo(() => getRelationalLayouts(), [item, filters]),
         relationalData: useMemo(() => getRelationalData(), [item, filters]),
         item: useMemo(() => pruneItem(), [item, filters]),

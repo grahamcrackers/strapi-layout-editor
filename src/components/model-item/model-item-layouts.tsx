@@ -8,16 +8,18 @@ import { GridLayouts } from './grid-layouts';
 import { RelationsToggle } from './relations-toggle';
 import { SaveLayoutsButton } from 'components/model-item/save-layouts-button';
 import { isEmpty } from 'utils/isEmpty';
+import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
 
-export const ExperienceEditor = () => {
+export const ModelItemLayouts = () => {
     const { contentType, itemId } = useParams<{ contentType: string; itemId: string }>();
     const [fetching, setFetching] = useState(true);
-    const { setMetadata, setItem, setLayouts } = useModelItem();
+    const { setMetadata, setItem, setLayouts, setFilters, setModelLayoutId } = useModelItem();
 
     useEffect(() => {
         const fetchData = async () => {
             const metadata = await getModelMetadata(contentType);
-            setMetadata(metadata.data.data);
+            const schema: ModelMetadata = metadata.data.data;
+            setMetadata(schema);
 
             const modelItem = await getModelItem(contentType, itemId);
             setItem(modelItem.data);
@@ -26,8 +28,12 @@ export const ExperienceEditor = () => {
             const modelLayouts = await getModelLayouts(contentType, itemId);
 
             if (isEmpty(modelLayouts.data)) {
+                // default filters to editRelations
+                setFilters(schema.layouts.editRelations);
                 setLayouts([]);
             } else {
+                setModelLayoutId(modelLayouts.data.id);
+                setFilters(modelLayouts.data.filters || []);
                 setLayouts(modelLayouts.data.layoutJson);
             }
 
@@ -53,10 +59,8 @@ export const ExperienceEditor = () => {
                         <SaveLayoutsButton />
                     </div>
                 </div>
-
                 <GridLayouts />
             </div>
-
             <RelationsToggle className="w-64 pt-4" />
         </Page>
     );

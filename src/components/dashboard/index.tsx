@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
-import { ExperienceEditor } from '../../components/experience-editor';
+import { ModelItemLayouts } from '../model-item/model-item-layouts';
 import { GridPreview } from 'components/grid-preview';
 import { ModelPage } from 'components/model/model-page';
 import { ModelProvider } from 'components/model/context';
@@ -43,7 +43,7 @@ export const Dashboard = () => {
                 <ModelItemProvider>
                     <Switch>
                         <Route exact={true} path="/dashboard/:contentType" component={ModelPage} />
-                        <Route exact={true} path="/dashboard/:contentType/:itemId" component={ExperienceEditor} />
+                        <Route exact={true} path="/dashboard/:contentType/:itemId" component={ModelItemLayouts} />
                         <Route
                             exact={true}
                             path="/dashboard/:contentType/:itemId/grid-preview"

@@ -21,7 +21,6 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
     // add or remove item to the filter list
     const handleChange = e => {
         const target = e.currentTarget;
-
         if (!target.checked) {
             setFilters([...filters, target.name]);
         }
@@ -38,7 +37,11 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
                 {initial.map(value => (
                     <li key={value}>
                         <label className="inline-flex items-center">
-                            <FilterCheckbox name={value} defaultChecked={true} onChange={e => handleChange(e)} />
+                            <FilterCheckbox
+                                name={value}
+                                defaultChecked={!filters.includes(value)}
+                                onChange={e => handleChange(e)}
+                            />
                             <span className="ml-2">{value}</span>
                         </label>
                     </li>
