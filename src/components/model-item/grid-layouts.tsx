@@ -1,13 +1,12 @@
 import { useModelItem } from 'components/model-item/context/model-item.context';
 import { useItemLayouts } from 'components/model-item/use-item-layouts';
 import React from 'react';
-import RGL, { WidthProvider, Layout } from 'react-grid-layout';
-import { JsonStringify } from 'common/json-stringify';
+import RGL, { Layout, WidthProvider } from 'react-grid-layout';
 
 const ReactGridLayout = WidthProvider(RGL);
 
 export const GridLayouts = () => {
-    const { metadata, layouts, setLayouts } = useModelItem();
+    const { layouts, setLayouts } = useModelItem();
     const { attributeLayouts, relationalLayouts, relationalData } = useItemLayouts();
 
     // relational data won't have the right y positions, but they

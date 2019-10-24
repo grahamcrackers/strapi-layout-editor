@@ -1,4 +1,4 @@
-import React, { createElement, FC, ReactHTML, ClassAttributes, ReactNode, HTMLAttributes } from 'react';
+import { createElement } from 'react';
 
 // type FunctionPropertyNames<T> = { [K in keyof T]: T[K] extends Function ? K : never }[keyof T];
 // type FunctionProperties<T> = Pick<T, FunctionPropertyNames<T>>;

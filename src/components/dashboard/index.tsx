@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
-import { ModelItemLayouts } from '../model-item/model-item-layouts';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { GridPreview } from 'components/grid-preview';
-import { ModelPage } from 'components/model/model-page';
-import { ModelProvider } from 'components/model/context';
-import { getModels } from 'services/strapi.service';
 import { ModelItemProvider } from 'components/model-item/context';
+import { ModelProvider } from 'components/model/context';
+import { ModelPage } from 'components/model/model-page';
+import React, { useEffect, useState } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
+import { getModels } from 'services/strapi.service';
+import { ModelItemLayouts } from '../model-item/model-item-layouts';
 
 export const Dashboard = () => {
     const [contentTypes, setContentTypes] = useState([]);

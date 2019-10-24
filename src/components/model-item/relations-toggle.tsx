@@ -1,6 +1,5 @@
-import React, { FC, useRef, useState } from 'react';
 import { useModelItem } from 'components/model-item/context/model-item.context';
-import { useItemLayouts } from 'components/model-item/use-item-layouts';
+import React, { FC, useRef } from 'react';
 
 interface RelationsToggleProps {
     className?: string;
