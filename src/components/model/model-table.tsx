@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useEffect, useState } from 'react';
 import { ModelContext } from './context';
 import { Link, useLocation } from 'react-router-dom';

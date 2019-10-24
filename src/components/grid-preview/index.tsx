@@ -1,25 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
-import { Layout } from 'react-grid-layout';
 import { useModelItem } from 'components/model-item/context/model-item.context';
+import React, { useState } from 'react';
+import { Layout } from 'react-grid-layout';
 
 export const GridPreview = () => {
-    const { contentType, itemId } = useParams();
     const { item, layouts } = useModelItem();
-    // const [layouts, setLayouts] = useState<Layout[]>([]);
-    const [fields, setFields] = useState<string[]>([]);
-
-    useEffect(() => {
-        // const { layoutJson } = layouts;
-        // setFields(
-        //     Object.keys(layoutJson).map(l => {
-        //         const name = layoutJson[l].i;
-        //         // if (name === 'isPost' || name === 'title') return name;
-        //         return name;
-        //     }),
-        // );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const [fields] = useState<string[]>([]);
 
     return (
         <div className="p-4 pl-0 w-full">

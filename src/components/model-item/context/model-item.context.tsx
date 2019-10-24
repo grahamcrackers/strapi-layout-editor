@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
+import React, { createContext, useState } from 'react';
 import { Layout } from 'react-grid-layout';
 
 interface ModelItemContextProps {

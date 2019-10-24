@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export type RelationType = 'oneWay' | 'oneToOne' | 'manyToOne' | 'manyWay' | 'oneToMany' | 'manyToMany';
 
 export interface StrapiGetParams {
