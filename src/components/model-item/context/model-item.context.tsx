@@ -52,5 +52,5 @@ export const useModelItem = () => {
         throw new Error('useModelItem must be used within a ModelItemProvider');
     }
 
-    return context;
+    return { ...context };
 };

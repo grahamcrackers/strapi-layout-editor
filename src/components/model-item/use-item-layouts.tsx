@@ -1,38 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { EditLayouts } from 'interfaces/strapi/model-layouts.interface';
-import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
 import { Layout } from 'react-grid-layout';
 import { useModelItem } from './context/model-item.context';
-import { useState, useEffect } from 'react';
-
-/* eslint-disable react-hooks/exhaustive-deps */
-// import { useEffect, useState } from 'react';
-// import { Layout } from 'react-grid-layout';
-// import { EditLayouts } from 'interfaces/strapi/model-layouts.interface';
-// import { ModelMetadata } from 'interfaces/strapi/model-metadata.interface';
-// import { AttributeProps } from 'interfaces/strapi/model-schema.interface';
-// import { MetaDataViews } from 'interfaces/strapi/attribute-metadatas.interface';
-
-// export interface ModelLayout {
-//     id: string;
-//     modelType: string;
-//     modelId: string;
-//     layoutJson: Layout[];
-// }
-
-// export interface ContentDataLayouts {
-//     list: boolean;
-//     edit: false | Omit<EditLayouts, 'name'>;
-//     editRelations: boolean;
-//     grid: false | Layout;
-// }
-
-// export interface ContentData {
-//     key: string;
-//     value: any;
-//     attributes: AttributeProps;
-//     metadata: MetaDataViews;
-//     layouts: ContentDataLayouts;
-// }
+import { useCallback, useMemo } from 'react';
 
 export interface EditLayoutWithPos extends EditLayouts {
     x: number;
@@ -40,33 +10,21 @@ export interface EditLayoutWithPos extends EditLayouts {
 }
 
 export const useItemLayouts = () => {
-    const { metadata, filters, setFilters } = useModelItem();
+    const { metadata, item, filters, setFilters } = useModelItem();
 
-    /**
-     * Flatten the edit layout matrix but preserve the x, y positions in the array matrix
-     */
-    const flattenEditLayouts = (): EditLayoutWithPos[] => {
-        const flattened: EditLayoutWithPos[] = [];
-        if (metadata.layouts) {
-            const editLayouts = metadata.layouts.edit;
-
-            for (const yPos in editLayouts) {
-                const editKey = editLayouts[yPos];
-                for (const xPos in editKey) {
-                    flattened.push({ ...editKey[xPos], y: +yPos, x: +xPos });
-                }
-            }
-        }
-
-        return flattened;
-    };
+    // filter relational data fields
+    const relations = Object.keys(item)
+        // get just relational fields
+        .filter(key => metadata.layouts.editRelations.includes(key))
+        // check if it's not in filters and if it is not null
+        .filter(key => !filters.includes(key) && item[key]);
 
     /**
      * Does the same thing as flattenEditLayouts() but will also provide the width and height for
      * react-grid-layout based on a 12 row grid
      */
     const calculateGridLayouts = (cols = 12): Layout[] => {
-        const gridLayouts: Layout[] = [];
+        const layouts: Layout[] = [];
 
         if (metadata.layouts.edit) {
             const editLayouts = metadata.layouts.edit;
@@ -85,19 +43,64 @@ export const useItemLayouts = () => {
                     TODO: if we want to open this up to be actually customizable, we need to customize
                     to different column sizes.
                     */
-                    gridLayouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
+                    layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
                 }
             }
         }
 
-        return gridLayouts.filter(layout => layout.i && !filters.includes(layout.i));
+        return layouts.filter(layout => layout.i && !filters.includes(layout.i));
+    };
+
+    const getRelationalLayouts = () => {
+        let layouts: Layout[] = [];
+
+        for (const r of relations) {
+            const collection = item[r];
+            for (const i in collection) {
+                // default our width to 12 and height to 1, let RGL handle positioning
+                const layout = { i: collection[i].id, x: 1, y: +i, w: 12, h: 1 } as Layout;
+                layouts = [...layouts, layout];
+            }
+        }
+
+        return layouts;
+    };
+
+    /** assigning minimal layout data for a relation */
+    const getRelationalData = (): any[] => {
+        let data: any[] = [];
+
+        for (const r of relations) {
+            // will error if array is empty
+            if (item[r].length) {
+                data = [...data, ...item[r]];
+            }
+        }
+
+        return data;
+    };
+
+    /**
+     * only send over the most relevent information for the item, if we don't care about an attribute, this is
+     * the place to trim it away
+     */
+    const pruneItem = () => {
+        const filtered = Object.keys(item)
+            .filter(key => !filters.includes(key))
+            .reduce((obj, key) => {
+                return { ...obj, [key]: item[key] };
+            }, {});
+
+        return filtered;
     };
 
     return {
-        // Expose metadata and original data just as a reference
         filters,
         setFilters,
-        editLayouts: flattenEditLayouts(),
-        gridLayouts: calculateGridLayouts(),
+        // we only want to recalculate these if item or filters has changed
+        gridLayouts: useMemo(() => calculateGridLayouts(), [item, filters]),
+        relationalLayouts: useMemo(() => getRelationalLayouts(), [item, filters]),
+        relationalData: useMemo(() => getRelationalData(), [item, filters]),
+        item: useMemo(() => pruneItem(), [item, filters]),
     };
 };
