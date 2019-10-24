@@ -32,20 +32,41 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
 
     return (
         <div className={className}>
-            <span className="text-gray-700">Filter Fields</span>
-            <ul className="mt-2">
-                {initial.map(value => (
-                    <li key={value}>
-                        <label className="inline-flex items-center">
-                            <FilterCheckbox
-                                name={value}
-                                defaultChecked={!filters.includes(value)}
-                                onChange={e => handleChange(e)}
-                            />
-                            <span className="ml-2">{value}</span>
-                        </label>
-                    </li>
-                ))}
+            <div className="text-gray-900 font-medium pb-4">Filter Fields</div>
+
+            <span className="text-gray-900">Attributes</span>
+            <ul className="mb-2">
+                {initial
+                    .filter(x => !editRelations.includes(x))
+                    .map(value => (
+                        <li key={value}>
+                            <label className="inline-flex items-center">
+                                <FilterCheckbox
+                                    name={value}
+                                    defaultChecked={!filters.includes(value)}
+                                    onChange={e => handleChange(e)}
+                                />
+                                <span className="ml-2">{value}</span>
+                            </label>
+                        </li>
+                    ))}
+            </ul>
+            <span className="text-gray-900">Relations</span>
+            <ul className="mb-2">
+                {initial
+                    .filter(x => editRelations.includes(x))
+                    .map(value => (
+                        <li key={value}>
+                            <label className="inline-flex items-center">
+                                <FilterCheckbox
+                                    name={value}
+                                    defaultChecked={!filters.includes(value)}
+                                    onChange={e => handleChange(e)}
+                                />
+                                <span className="ml-2">{value}</span>
+                            </label>
+                        </li>
+                    ))}
             </ul>
         </div>
     );
