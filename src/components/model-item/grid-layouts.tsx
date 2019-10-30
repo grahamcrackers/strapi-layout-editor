@@ -8,18 +8,25 @@ const ReactGridLayout = WidthProvider(RGL);
 export const GridLayouts = () => {
     const { layouts, setLayouts } = useModelItem();
     const { attributeLayouts, relationalLayouts, relationalData } = useItemLayouts();
+    console.log(layouts);
 
     // relational data won't have the right y positions, but they
     // will change based on what is filtered
     const adjustRelationYPos = () => {
         let adjusted: Layout[] = [];
         const yPostions: number[] = attributeLayouts.map(x => x.y);
-        const adjPos = Math.max(...yPostions);
+
+        // if no yPositions give a value of 0
+        const adjPos = yPostions.length ? Math.max(...yPostions) : 0;
 
         for (const layout of relationalLayouts) {
             adjusted = [...adjusted, { ...layout, y: layout.y + adjPos }];
         }
         return adjusted;
+    };
+
+    const combineLayouts = (attributes: Layout[]) => {
+        return [...attributes, ...adjustRelationYPos()];
     };
 
     if (!layouts) {
@@ -30,8 +37,9 @@ export const GridLayouts = () => {
         <>
             <ReactGridLayout
                 className="bg-gray-200"
-                layout={[...attributeLayouts, ...adjustRelationYPos()]}
+                layout={combineLayouts(attributeLayouts)}
                 onLayoutChange={changedLayouts => {
+                    // console.log(changedLayouts);
                     setLayouts(changedLayouts);
                 }}
             >
