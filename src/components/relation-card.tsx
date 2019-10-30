@@ -10,6 +10,5 @@ interface Props {
 }
 
 export const RelationCard: FC<Props> = ({ relation }) => {
-    console.log(relation);
     return <span>{`${relation.type}:${relation.id}`}</span>;
 };
