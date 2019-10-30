@@ -2,13 +2,13 @@ import { useModelItem } from 'components/model-item/context/model-item.context';
 import { useItemLayouts } from 'components/model-item/use-item-layouts';
 import React from 'react';
 import RGL, { Layout, WidthProvider } from 'react-grid-layout';
+import { RelationCard } from '../relation-card';
 
 const ReactGridLayout = WidthProvider(RGL);
 
 export const GridLayouts = () => {
     const { layouts, setLayouts } = useModelItem();
     const { attributeLayouts, relationalLayouts, relationalData } = useItemLayouts();
-    console.log(layouts);
 
     // relational data won't have the right y positions, but they
     // will change based on what is filtered
@@ -39,7 +39,6 @@ export const GridLayouts = () => {
                 className="bg-gray-200"
                 layout={combineLayouts(attributeLayouts)}
                 onLayoutChange={changedLayouts => {
-                    // console.log(changedLayouts);
                     setLayouts(changedLayouts);
                 }}
             >
@@ -56,9 +55,7 @@ export const GridLayouts = () => {
                 {relationalData.map(relation => {
                     return (
                         <div key={relation.id} className="rounded shadow bg-white">
-                            <span>{relation.id}</span>
-                            {/* TODO: Display actual data */}
-                            {/* <div>{JSON.stringify(relation)}</div> */}
+                            <RelationCard relation={relation} />
                         </div>
                     );
                 })}

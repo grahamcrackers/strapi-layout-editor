@@ -74,7 +74,10 @@ export const useItemLayouts = () => {
         for (const r of relations) {
             // will error if array is empty
             if (item[r].length) {
-                data = [...data, ...item[r]];
+                // probably not the best place to do this but we need the relation type on
+                // the objects being passed through
+                const items = item[r].map(i => ({ type: r, ...i }));
+                data = [...data, ...items];
             }
         }
 
