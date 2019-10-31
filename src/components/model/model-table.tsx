@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useEffect, useState } from 'react';
 import { ModelContext } from './context';
-import { Link, useLocation } from 'react-router-dom';
+import { ModelTableCell } from './model-table-cell';
 
 export const ModelTable = () => {
-    const location = useLocation();
     const { metadata, items } = useContext(ModelContext);
     const [rows, setRows] = useState<any[]>([]);
 
@@ -38,9 +37,6 @@ export const ModelTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata.layouts, items]);
 
-    /* these fields don't just display text, this is rough and dirty for now */
-    const specialSnowflakes = ['id', 'previewImage'];
-
     return (
         <table className="w-full text-left table-collapse border">
             <thead>
@@ -62,13 +58,9 @@ export const ModelTable = () => {
                                 return (
                                     <td
                                         key={index}
-                                        className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-pre"
+                                        className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700"
                                     >
-                                        {attribute === 'id' && (
-                                            <Link to={`${location.pathname}/${row[attribute]}`}>{row[attribute]}</Link>
-                                        )}
-                                        {attribute === 'previewImage' && <div>TODO: Display Image</div>}
-                                        {!specialSnowflakes.includes(attribute) && row[attribute]}
+                                        <ModelTableCell attribute={attribute} row={row} />
                                     </td>
                                 );
                             })}
