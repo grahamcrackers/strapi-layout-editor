@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import { useModel } from './model/context/model.context';
 
 interface Props {
     relation: {
@@ -10,5 +11,6 @@ interface Props {
 }
 
 export const RelationCard: FC<Props> = ({ relation }) => {
+    const { metadata } = useModel();
     return <span>{`${relation.type}:${relation.id}`}</span>;
 };

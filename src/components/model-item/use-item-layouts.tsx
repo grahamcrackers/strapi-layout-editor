@@ -38,6 +38,10 @@ export const useItemLayouts = () => {
                     const x = startingPos;
                     startingPos = startingPos + obj.size;
 
+                    // if content is rich text editor, give it a bigger height
+                    // if (metadata.schema.attributes[obj.name].type === 'richtext') {
+                    //     layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 5, minH: 1 });
+                    // } else {
                     /*
                     It looks like strapi bases it's width on a 12 col layout, so we are using the size from the
                     metadata. Height is set to 1 as a default to lay out the data on the page.
@@ -45,6 +49,7 @@ export const useItemLayouts = () => {
                     to different column sizes.
                     */
                     layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
+                    // }
                 }
             }
         }
@@ -59,7 +64,7 @@ export const useItemLayouts = () => {
             const collection = item[r];
             for (const i in collection) {
                 // default our width to 12 and height to 1, let RGL handle positioning
-                const layout = { i: collection[i].id, x: 1, y: +i, w: 12, h: 1 } as Layout;
+                const layout = { i: collection[i].id, x: 1, y: +i, w: 12, minH: 1 } as Layout;
                 layouts = [...layouts, layout];
             }
         }

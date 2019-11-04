@@ -23,10 +23,10 @@ interface Props {
     className?: string;
 }
 
-export const ModelImagePreview: FC<Props> = ({ image, className }) => {
+export const ImagePreview: FC<Props> = ({ image, className }) => {
     if (isEmpty(image)) {
-        return <div>N/A</div>;
+        return <div>No Image</div>;
     }
 
-    return <img className={className} src={image.url} alt="model table preview"></img>;
+    return <img className={className} src={image.url} alt="table item preview"></img>;
 };
