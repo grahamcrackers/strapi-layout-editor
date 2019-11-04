@@ -80,6 +80,7 @@ export const GridLayouts = () => {
                 }}
             >
                 {/* Layout the metadata edit fields */}
+                {/* eslint-disable-next-line array-callback-return */}
                 {attributeLayouts.map(({ i }) => {
                     const index = i as string;
                     if (imageTypes.includes(index)) {

@@ -12,10 +12,15 @@ const FilterCheckbox = ({ ...props }) => {
 
 export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props }) => {
     // get items from metadata
-    const { metadata, filters, setFilters } = useModelItem();
+    const { metadata, filters, setFilters, item } = useModelItem();
     const { edit, editRelations } = metadata.layouts;
     const attributes = edit.flat().map(x => x.name);
     const initial = [...attributes, ...editRelations];
+
+    const disableCheckbox = () => {
+        console.log(item);
+    };
+    disableCheckbox();
 
     // add or remove item to the filter list
     const handleChange = e => {
@@ -37,35 +42,41 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
             <ul className="mb-2">
                 {initial
                     .filter(x => !editRelations.includes(x))
-                    .map(value => (
-                        <li key={value}>
-                            <label className="inline-flex items-center">
-                                <FilterCheckbox
-                                    name={value}
-                                    defaultChecked={!filters.includes(value)}
-                                    onChange={e => handleChange(e)}
-                                />
-                                <span className="ml-2">{value}</span>
-                            </label>
-                        </li>
-                    ))}
+                    .map(value => {
+                        return (
+                            <li key={value}>
+                                <label className={`inline-flex items-center`}>
+                                    <FilterCheckbox
+                                        name={value}
+                                        defaultChecked={!filters.includes(value)}
+                                        onChange={e => handleChange(e)}
+                                    />
+                                    <span className="ml-2">{value}</span>
+                                </label>
+                            </li>
+                        );
+                    })}
             </ul>
             <span className="text-gray-900">Relations</span>
             <ul className="mb-2">
                 {initial
                     .filter(x => editRelations.includes(x))
-                    .map(value => (
-                        <li key={value}>
-                            <label className="inline-flex items-center">
-                                <FilterCheckbox
-                                    name={value}
-                                    defaultChecked={!filters.includes(value)}
-                                    onChange={e => handleChange(e)}
-                                />
-                                <span className="ml-2">{value}</span>
-                            </label>
-                        </li>
-                    ))}
+                    .map(value => {
+                        const disabled = item[value].length;
+                        return (
+                            <li key={value}>
+                                <label className={`inline-flex items-center ${disabled && `text-gray-500`}`}>
+                                    <FilterCheckbox
+                                        name={value}
+                                        disabled={disabled}
+                                        defaultChecked={!filters.includes(value)}
+                                        onChange={e => handleChange(e)}
+                                    />
+                                    <span className="ml-2">{value}</span>
+                                </label>
+                            </li>
+                        );
+                    })}
             </ul>
         </div>
     );
