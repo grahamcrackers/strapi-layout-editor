@@ -64,7 +64,7 @@ export const useItemLayouts = () => {
             const collection = item[r];
             for (const i in collection) {
                 // default our width to 12 and height to 1, let RGL handle positioning
-                const layout = { i: collection[i].id, x: 1, y: +i, w: 12, minH: 1 } as Layout;
+                const layout = { i: collection[i].id, x: 1, y: +i, w: 12, h: 1 } as Layout;
                 layouts = [...layouts, layout];
             }
         }
