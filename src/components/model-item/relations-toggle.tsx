@@ -17,6 +17,8 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
     const attributes = edit.flat().map(x => x.name);
     const initial = [...attributes, ...editRelations];
 
+    console.log(item);
+
     const disableCheckbox = () => {
         console.log(item);
     };
@@ -61,21 +63,27 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
             <ul className="mb-2">
                 {initial
                     .filter(x => editRelations.includes(x))
+                    // eslint-disable-next-line array-callback-return
                     .map(value => {
-                        const disabled = item[value].length;
-                        return (
-                            <li key={value}>
-                                <label className={`inline-flex items-center ${disabled && `text-gray-500`}`}>
-                                    <FilterCheckbox
-                                        name={value}
-                                        disabled={disabled}
-                                        defaultChecked={!filters.includes(value)}
-                                        onChange={e => handleChange(e)}
-                                    />
-                                    <span className="ml-2">{value}</span>
-                                </label>
-                            </li>
-                        );
+                        let disabled = false;
+
+                        if (item[value]) {
+                            disabled = !item[value].length;
+
+                            return (
+                                <li key={value}>
+                                    <label className={`inline-flex items-center ${disabled && `text-gray-500`}`}>
+                                        <FilterCheckbox
+                                            name={value}
+                                            disabled={disabled}
+                                            defaultChecked={!filters.includes(value)}
+                                            onChange={e => handleChange(e)}
+                                        />
+                                        <span className="ml-2">{`${value} (${item[value].length})`}</span>
+                                    </label>
+                                </li>
+                            );
+                        }
                     })}
             </ul>
         </div>
