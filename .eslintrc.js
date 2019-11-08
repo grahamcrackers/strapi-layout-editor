@@ -20,7 +20,7 @@ module.exports = {
         // e.g. "@typescript-eslint/explicit-function-return-type": "off",
         
         '@typescript-eslint/interface-name-prefix': 1,
-        '@typescript-eslint/no-explicit-any': 1,
+        '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/explicit-function-return-type': 0,
         // '@typescript-eslint/no-object-literal-type-assertion': ["error", {
         //   allowAsParameter: true // Allow type assertion in call and new expression, default false

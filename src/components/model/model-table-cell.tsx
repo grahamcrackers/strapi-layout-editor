@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-import { useLocation } from 'react-router';
-import { Link } from 'react-router-dom';
 import { ImagePreview } from '../image-preview/image-preview';
 
 interface Props {
@@ -9,8 +7,6 @@ interface Props {
 }
 
 export const ModelTableCell: FC<Props> = ({ attribute, row }) => {
-    const location = useLocation();
-
     const imageTypes = ['image', 'previewImage'];
 
     return (
