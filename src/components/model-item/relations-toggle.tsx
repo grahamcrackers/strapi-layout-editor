@@ -67,7 +67,10 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
                     .map(value => {
                         let disabled = false;
 
+                        // if the relation exists on the item, get the number of objects in the relation
+                        // if numbe of objects is 0, disable the toggle
                         if (item[value]) {
+                            const numOfRelations = item[value].length || 0;
                             disabled = !item[value].length;
 
                             return (
@@ -79,7 +82,7 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
                                             defaultChecked={!filters.includes(value)}
                                             onChange={e => handleChange(e)}
                                         />
-                                        <span className="ml-2">{`${value} (${item[value].length})`}</span>
+                                        <span className="ml-2">{`${value} (${numOfRelations})`}</span>
                                     </label>
                                 </li>
                             );
