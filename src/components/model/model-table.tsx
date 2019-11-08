@@ -2,8 +2,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ModelContext } from './context';
 import { ModelTableCell } from './model-table-cell';
+import { useHistory, useLocation } from 'react-router-dom';
 
 export const ModelTable = () => {
+    const location = useLocation();
+    const history = useHistory();
     const { metadata, items } = useContext(ModelContext);
     const [rows, setRows] = useState<any[]>([]);
 
@@ -14,12 +17,14 @@ export const ModelTable = () => {
     /////// UUUUUUUUGH TODO: CLEAN THIS UP
     const getRowsData = (items: any) => {
         const rows: any[] = [];
+        console.log(items);
+
         // get data from object of object
         Object.keys(items).forEach(item => {
             const row = items[item];
             const newObj = {};
             for (const property in row) {
-                if (metadata.layouts.list.includes(property)) {
+                if (metadata.layouts.list.includes(property) || property === 'id') {
                     newObj[`${property}`] = row[property];
                 }
             }
@@ -37,6 +42,10 @@ export const ModelTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata.layouts, items]);
 
+    const handleRoute = (id: string) => {
+        history.push(`${location.pathname}/${id}`);
+    };
+
     return (
         <table className="w-full text-left table-collapse border">
             <thead>
@@ -53,7 +62,11 @@ export const ModelTable = () => {
             <tbody className="align-baseline">
                 {rows &&
                     rows.map(row => (
-                        <tr key={row.id}>
+                        <tr
+                            key={row.id}
+                            onClick={() => handleRoute(row.id)}
+                            className="cursor-pointer hover:bg-gray-100"
+                        >
                             {metadata.layouts.list.map((attribute, index) => {
                                 return (
                                     <td

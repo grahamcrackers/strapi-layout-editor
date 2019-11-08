@@ -16,11 +16,11 @@ export const ModelTableCell: FC<Props> = ({ attribute, row }) => {
     return (
         <>
             {/* make the id a link */}
-            {attribute === 'id' && (
+            {/* {attribute === 'id' && (
                 <Link className="hover:underline" to={`${location.pathname}/${row[attribute]}`}>
                     {row[attribute]}
                 </Link>
-            )}
+            )} */}
 
             {/* if we have an image */}
             {imageTypes.includes(attribute) && (
@@ -28,7 +28,7 @@ export const ModelTableCell: FC<Props> = ({ attribute, row }) => {
             )}
 
             {/* if it's not an id or an image type */}
-            {!['id', ...imageTypes].includes(attribute) && row[attribute]}
+            {![...imageTypes].includes(attribute) && row[attribute]}
         </>
     );
 };
