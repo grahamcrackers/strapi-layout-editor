@@ -21,7 +21,7 @@
         "react-grid-layout": "^0.16.6",
         "react-paginate": "^6.3.0",
         "react-router-dom": "5.1.2",
-        "showdown": "^1.9.0"
+        "showdown": "^1.9.1"
     },
     "devDependencies": {
         "@craco/craco": "^5.5.0",
