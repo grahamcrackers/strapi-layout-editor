@@ -38,6 +38,10 @@ export const useItemLayouts = () => {
                     const x = startingPos;
                     startingPos = startingPos + obj.size;
 
+                    // if content is rich text editor, give it a bigger height
+                    // if (metadata.schema.attributes[obj.name].type === 'richtext') {
+                    //     layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 5, minH: 1 });
+                    // } else {
                     /*
                     It looks like strapi bases it's width on a 12 col layout, so we are using the size from the
                     metadata. Height is set to 1 as a default to lay out the data on the page.
@@ -45,6 +49,7 @@ export const useItemLayouts = () => {
                     to different column sizes.
                     */
                     layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
+                    // }
                 }
             }
         }
@@ -74,7 +79,10 @@ export const useItemLayouts = () => {
         for (const r of relations) {
             // will error if array is empty
             if (item[r].length) {
-                data = [...data, ...item[r]];
+                // probably not the best place to do this but we need the relation type on
+                // the objects being passed through
+                const items = item[r].map(i => ({ type: r, ...i }));
+                data = [...data, ...items];
             }
         }
 

@@ -19,8 +19,6 @@ export const ModelSearch = () => {
         };
         if (debouncedValue) getData();
 
-        console.log(debouncedValue);
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [debouncedValue]);
 

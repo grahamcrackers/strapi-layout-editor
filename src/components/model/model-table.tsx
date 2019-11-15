@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useContext, useEffect, useState } from 'react';
 import { ModelContext } from './context';
-import { Link, useLocation } from 'react-router-dom';
+import { ModelTableCell } from './model-table-cell';
+import { useHistory, useLocation } from 'react-router-dom';
 
 export const ModelTable = () => {
     const location = useLocation();
+    const history = useHistory();
     const { metadata, items } = useContext(ModelContext);
     const [rows, setRows] = useState<any[]>([]);
 
@@ -15,12 +17,14 @@ export const ModelTable = () => {
     /////// UUUUUUUUGH TODO: CLEAN THIS UP
     const getRowsData = (items: any) => {
         const rows: any[] = [];
+        console.log(items);
+
         // get data from object of object
         Object.keys(items).forEach(item => {
             const row = items[item];
             const newObj = {};
             for (const property in row) {
-                if (metadata.layouts.list.includes(property)) {
+                if (metadata.layouts.list.includes(property) || property === 'id') {
                     newObj[`${property}`] = row[property];
                 }
             }
@@ -38,8 +42,9 @@ export const ModelTable = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [metadata.layouts, items]);
 
-    /* these fields don't just display text, this is rough and dirty for now */
-    const specialSnowflakes = ['id', 'previewImage'];
+    const handleRoute = (id: string) => {
+        history.push(`${location.pathname}/${id}`);
+    };
 
     return (
         <table className="w-full text-left table-collapse border">
@@ -57,18 +62,18 @@ export const ModelTable = () => {
             <tbody className="align-baseline">
                 {rows &&
                     rows.map(row => (
-                        <tr key={row.id}>
+                        <tr
+                            key={row.id}
+                            onClick={() => handleRoute(row.id)}
+                            className="cursor-pointer hover:bg-gray-100"
+                        >
                             {metadata.layouts.list.map((attribute, index) => {
                                 return (
                                     <td
                                         key={index}
-                                        className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700 whitespace-pre"
+                                        className="p-2 border-t border-gray-300 font-mono text-xs text-blue-700"
                                     >
-                                        {attribute === 'id' && (
-                                            <Link to={`${location.pathname}/${row[attribute]}`}>{row[attribute]}</Link>
-                                        )}
-                                        {attribute === 'previewImage' && <div>TODO: Display Image</div>}
-                                        {!specialSnowflakes.includes(attribute) && row[attribute]}
+                                        <ModelTableCell attribute={attribute} row={row} />
                                     </td>
                                 );
                             })}
