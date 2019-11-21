@@ -61,7 +61,8 @@ export const useItemLayouts = () => {
         let layouts: Layout[] = [];
 
         for (const r of relations) {
-            const collection = item[r];
+            const collectionItem = item[r];
+            const collection = Array.isArray(collectionItem) && collectionItem || [collectionItem];
             for (const i in collection) {
                 // default our width to 12 and height to 1, let RGL handle positioning
                 const layout = { i: collection[i].id, x: 1, y: +i, w: 12, h: 1 } as Layout;
@@ -78,10 +79,11 @@ export const useItemLayouts = () => {
 
         for (const r of relations) {
             // will error if array is empty
-            if (item[r].length) {
+            const relationalItems = Array.isArray(item[r]) && item[r] || [item[r]];
+            if (relationalItems.length) {
                 // probably not the best place to do this but we need the relation type on
                 // the objects being passed through
-                const items = item[r].map(i => ({ type: r, ...i }));
+                const items = relationalItems.map(i => ({ type: r, ...i }));
                 data = [...data, ...items];
             }
         }
