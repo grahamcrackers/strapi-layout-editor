@@ -70,8 +70,14 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
                         // if the relation exists on the item, get the number of objects in the relation
                         // if numbe of objects is 0, disable the toggle
                         if (item[value]) {
-                            const numOfRelations = item[value].length || 0;
-                            disabled = !item[value].length;
+                            let numOfRelations: number = 0;
+                            if (Array.isArray(item[value])) {
+                                numOfRelations = item[value].length || 0;
+                            }
+                            else {
+                                numOfRelations = 1;
+                            }
+                            disabled = !numOfRelations;
 
                             return (
                                 <li key={value}>
