@@ -10,8 +10,8 @@ export const ModelTable = () => {
     const { metadata, items } = useContext(ModelContext);
     const [rows, setRows] = useState<any[]>([]);
 
-    const headers = Object.entries(metadata.metadatas).filter(key => {
-        return metadata.layouts.list.includes(key[0]);
+    const headers = Object.entries(metadata.metadatas || metadata.contentType).filter(key => {
+        return metadata.contentType.layouts.list.includes(key[0]);
     });
 
     /////// UUUUUUUUGH TODO: CLEAN THIS UP
@@ -24,7 +24,7 @@ export const ModelTable = () => {
             const row = items[item];
             const newObj = {};
             for (const property in row) {
-                if (metadata.layouts.list.includes(property) || property === 'id') {
+                if ((metadata.layouts || metadata.contentType.layouts).list.includes(property) || property === 'id') {
                     newObj[`${property}`] = row[property];
                 }
             }
@@ -40,7 +40,7 @@ export const ModelTable = () => {
             setRows(bodyData);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [metadata.layouts, items]);
+    }, [metadata.contentType.layouts, items]);
 
     const handleRoute = (id: string) => {
         history.push(`${location.pathname}/${id}`);
@@ -67,7 +67,7 @@ export const ModelTable = () => {
                             onClick={() => handleRoute(row.id)}
                             className="cursor-pointer hover:bg-gray-100"
                         >
-                            {metadata.layouts.list.map((attribute, index) => {
+                            {metadata.contentType.layouts.list.map((attribute, index) => {
                                 return (
                                     <td
                                         key={index}

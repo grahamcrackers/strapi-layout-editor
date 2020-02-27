@@ -29,7 +29,7 @@ export const ModelItemLayouts = () => {
 
             if (isEmpty(modelLayouts.data)) {
                 // default filters to editRelations
-                setFilters(schema.layouts.editRelations);
+                setFilters((schema.layouts || schema.contentType.layouts).editRelations);
                 setLayouts([]);
             } else {
                 setModelLayoutId(modelLayouts.data.id);

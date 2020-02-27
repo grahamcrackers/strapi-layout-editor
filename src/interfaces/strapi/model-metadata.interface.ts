@@ -7,6 +7,15 @@ export interface ModelMetadata {
     uid: string;
     schema: ModelSchema;
     settings: ModelSettings;
+    contentType: ContentType;
+    metadatas: AttributeMetaDatas;
+    layouts: ModelLayouts;
+}
+
+export interface ContentType {
+    uid: string;
+    schema: ModelSchema;
+    settings: ModelSettings;
     metadatas: AttributeMetaDatas;
     layouts: ModelLayouts;
 }

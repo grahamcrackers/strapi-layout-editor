@@ -11,12 +11,12 @@ export interface EditLayoutWithPos extends EditLayouts {
 }
 
 export const useItemLayouts = () => {
-    const { metadata, item, filters, setFilters } = useModelItem();
+    const { metadata, item, filters, setFilters, layouts } = useModelItem();
 
     // filter relational data fields
     const relations = Object.keys(item)
         // get just relational fields
-        .filter(key => metadata.layouts.editRelations.includes(key))
+        .filter(key => (metadata.layouts || metadata.contentType.layouts).editRelations.includes(key))
         // check if it's not in filters and if it is not null
         .filter(key => !filters.includes(key) && item[key]);
 
@@ -25,18 +25,28 @@ export const useItemLayouts = () => {
      * react-grid-layout based on a 12 row grid
      */
     const getAttributeLayouts = (cols = 12): Layout[] => {
-        const layouts: Layout[] = [];
+        const attrLayouts: Layout[] = [];
 
-        if (metadata.layouts.edit) {
-            const editLayouts = metadata.layouts.edit;
+        if ((metadata.layouts || metadata.contentType.layouts).edit) {
+            const editLayouts = (metadata.layouts || metadata.contentType.layouts).edit;
             for (const yPos in editLayouts) {
                 const editKey = editLayouts[yPos];
                 let startingPos = 0; // add each objects size
 
                 for (const xPos in editKey) {
                     const obj = editKey[xPos];
-                    const x = startingPos;
-                    startingPos = startingPos + obj.size;
+                    const layoutIndex = layouts.findIndex(l => l.i === obj.name);
+                    let x = startingPos;
+                    let y = +yPos;
+                    let w = obj.size;
+                    let h = 1;
+                    if (layoutIndex > -1) {
+                        x = layouts[layoutIndex].x;
+                        y = layouts[layoutIndex].h;
+                        w = layouts[layoutIndex].w;
+                        h = layouts[layoutIndex].h;
+                        startingPos = w + x;
+                    }
 
                     // if content is rich text editor, give it a bigger height
                     // if (metadata.schema.attributes[obj.name].type === 'richtext') {
@@ -48,17 +58,18 @@ export const useItemLayouts = () => {
                     TODO: if we want to open this up to be actually customizable, we need to customize
                     to different column sizes.
                     */
-                    layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
+                    console.log({ i: obj.name, x, y, w, h });
+                    attrLayouts.push({ i: obj.name, x, y, w, h });
                     // }
                 }
             }
         }
 
-        return layouts.filter(layout => layout.i && !filters.includes(layout.i));
+        return attrLayouts.filter(layout => layout.i && !filters.includes(layout.i));
     };
 
     const getRelationalLayouts = () => {
-        let layouts: Layout[] = [];
+        let attrLayouts: Layout[] = [];
 
         for (const r of relations) {
             let collection: any[] = [];
@@ -66,20 +77,30 @@ export const useItemLayouts = () => {
             if (collectionItem) {
                 if (Array.isArray(collectionItem)) {
                     collection = collectionItem;
-                }
-                else {
+                } else {
                     collection = [collectionItem];
                 }
             }
 
             for (const i in collection) {
+                const layoutIndex = layouts.findIndex(l => l.i === collection[i].id);
+                let x = 1;
+                let y = +i;
+                let w = 12;
+                let h = 1;
+                if (layoutIndex > -1) {
+                    x = layouts[layoutIndex].x;
+                    y = layouts[layoutIndex].h;
+                    w = layouts[layoutIndex].w;
+                    h = layouts[layoutIndex].h;
+                }
                 // default our width to 12 and height to 1, let RGL handle positioning
-                const layout = { i: collection[i].id, x: 1, y: +i, w: 12, h: 1 } as Layout;
-                layouts = [...layouts, layout];
+                const relLayout = { i: collection[i].id, x, y, w, h } as Layout;
+                attrLayouts = [...attrLayouts, relLayout];
             }
         }
 
-        return layouts;
+        return attrLayouts;
     };
 
     /** assigning minimal layout data for a relation */
@@ -93,8 +114,7 @@ export const useItemLayouts = () => {
             if (relationalItem) {
                 if (Array.isArray(relationalItem)) {
                     relationalItems = relationalItem;
-                }
-                else {
+                } else {
                     relationalItems = [relationalItem];
                 }
             }
