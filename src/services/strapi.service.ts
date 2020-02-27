@@ -59,10 +59,10 @@ export const postModelLayouts = async (
     layoutId = '',
 ) => {
     if (layoutId) {
-        const url = `${endpoint}/content-manager/explorer/modellayout/${layoutId}?source=layout-editor`;
+        const url = `${endpoint}/content-manager/explorer/plugins::layout-editor.modellayout/${layoutId}?source=layout-editor`;
         return await axios.put(url, { modelType, modelId, filters, layoutJson });
     }
 
-    const url = `${endpoint}/content-manager/explorer/modellayout?source=layout-editor`;
+    const url = `${endpoint}/content-manager/explorer/plugins::layout-editor.modellayout?source=layout-editor`;
     return await axios.post(url, { modelType, modelId, filters, layoutJson });
 };

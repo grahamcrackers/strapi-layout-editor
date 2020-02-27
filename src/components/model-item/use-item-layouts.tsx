@@ -16,7 +16,7 @@ export const useItemLayouts = () => {
     // filter relational data fields
     const relations = Object.keys(item)
         // get just relational fields
-        .filter(key => metadata.layouts.editRelations.includes(key))
+        .filter(key => (metadata.layouts || metadata.contentType.layouts).editRelations.includes(key))
         // check if it's not in filters and if it is not null
         .filter(key => !filters.includes(key) && item[key]);
 
@@ -27,8 +27,8 @@ export const useItemLayouts = () => {
     const getAttributeLayouts = (cols = 12): Layout[] => {
         const layouts: Layout[] = [];
 
-        if (metadata.layouts.edit) {
-            const editLayouts = metadata.layouts.edit;
+        if ((metadata.layouts || metadata.contentType.layouts).edit) {
+            const editLayouts = (metadata.layouts || metadata.contentType.layouts).edit;
             for (const yPos in editLayouts) {
                 const editKey = editLayouts[yPos];
                 let startingPos = 0; // add each objects size
@@ -62,7 +62,7 @@ export const useItemLayouts = () => {
 
         for (const r of relations) {
             const collectionItem = item[r];
-            const collection = Array.isArray(collectionItem) && collectionItem || [collectionItem];
+            const collection = (Array.isArray(collectionItem) && collectionItem) || [collectionItem];
             for (const i in collection) {
                 // default our width to 12 and height to 1, let RGL handle positioning
                 const layout = { i: collection[i].id, x: 1, y: +i, w: 12, h: 1 } as Layout;
@@ -79,7 +79,7 @@ export const useItemLayouts = () => {
 
         for (const r of relations) {
             // will error if array is empty
-            const relationalItems = Array.isArray(item[r]) && item[r] || [item[r]];
+            const relationalItems = (Array.isArray(item[r]) && item[r]) || [item[r]];
             if (relationalItems.length) {
                 // probably not the best place to do this but we need the relation type on
                 // the objects being passed through

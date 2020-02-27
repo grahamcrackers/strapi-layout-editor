@@ -96,7 +96,7 @@ export const GridLayouts = () => {
                         );
                     }
                     // if we have richtext editor content, attempt to convert it to html
-                    else if (metadata.schema.attributes[index].type === 'richtext') {
+                    else if ((metadata.schema || metadata.contentType.schema).attributes[index].type === 'richtext') {
                         const content = mdConverter.makeHtml(item[i as string]);
                         return (
                             <div key={i} className="rounded shadow bg-white">

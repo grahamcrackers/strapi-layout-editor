@@ -13,7 +13,7 @@ const FilterCheckbox = ({ ...props }) => {
 export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props }) => {
     // get items from metadata
     const { metadata, filters, setFilters, item } = useModelItem();
-    const { edit, editRelations } = metadata.layouts;
+    const { edit, editRelations } = metadata.layouts || metadata.contentType.layouts;
     const attributes = edit.flat().map(x => x.name);
     const initial = [...attributes, ...editRelations];
 
@@ -70,11 +70,10 @@ export const RelationsToggle: FC<RelationsToggleProps> = ({ className, ...props 
                         // if the relation exists on the item, get the number of objects in the relation
                         // if numbe of objects is 0, disable the toggle
                         if (item[value]) {
-                            let numOfRelations: number = 0;
+                            let numOfRelations = 0;
                             if (Array.isArray(item[value])) {
                                 numOfRelations = item[value].length || 0;
-                            }
-                            else {
+                            } else {
                                 numOfRelations = 1;
                             }
                             disabled = !numOfRelations;
