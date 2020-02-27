@@ -48,6 +48,7 @@ export const useItemLayouts = () => {
                     TODO: if we want to open this up to be actually customizable, we need to customize
                     to different column sizes.
                     */
+                    console.log({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
                     layouts.push({ i: obj.name, x, y: +yPos, w: obj.size, h: 1 });
                     // }
                 }
